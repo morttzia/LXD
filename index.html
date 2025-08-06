@@ -19,7 +19,27 @@
             background-color: #000000;
             font-family: 'Poppins', 'Cairo', sans-serif;
             /* New minimalist crosshair cursor */
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") 12 12, auto;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24' fill='none' stroke='white' stroke-width='1.5'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") 12 12, auto;
+        }
+
+        /* --- Intro Overlay --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .intro-button {
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
 
         /* Canvas for the 3D animation - Fixed to stay in background */
@@ -30,6 +50,8 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
 
         .section {
@@ -42,28 +64,29 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            transition: opacity 1.2s ease-in-out;
+            transition: opacity 1.2s ease-in-out, visibility 1.2s;
         }
 
         #section-1 {
-            opacity: 1;
+            opacity: 0; /* Starts hidden */
+            visibility: hidden;
             z-index: 3;
         }
 
         #section-2 {
             opacity: 0;
-            pointer-events: none;
+            visibility: hidden;
             z-index: 4;
         }
         
         .visible {
             opacity: 1 !important;
-            pointer-events: auto !important;
+            visibility: visible !important;
         }
 
         .hidden {
             opacity: 0 !important;
-            pointer-events: none !important;
+            visibility: hidden !important;
         }
 
         /* --- Glitch Effect on Title --- */
@@ -137,26 +160,17 @@
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2);
         }
         
-        /* --- Feature Card Style --- */
-        .feature-card {
-             background-color: rgba(20, 20, 20, 0.5);
-             border: 1px solid rgba(255, 255, 255, 0.1);
-             backdrop-filter: blur(10px);
-             transition: all 0.3s ease-in-out;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* --- Scroll Down Arrow --- */
-        .scroll-down {
+        /* --- Navigation Arrows --- */
+        .nav-arrow {
             position: absolute;
-            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
             animation: pulse 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .scroll-down {
+            bottom: 2rem;
         }
 
         @keyframes pulse {
@@ -168,6 +182,18 @@
 </head>
 <body class="text-white">
     
+    <!-- Intro Overlay -->
+    <div id="intro-overlay">
+        <a href="https://t.me/Arch_XM" target="_blank" rel="noopener noreferrer" 
+           class="intro-button outline-btn inline-flex items-center justify-center px-6 py-3 text-sm font-bold rounded-lg text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 48 48">
+                <path d="M41.41,7.44l-32.8,12.26a2.47,2.47,0,0,0,0,4.62L19,28.2l-1.3,8.71a2.49,2.49,0,0,0,4.13,2.13L26.38,35,34,40.63a2.49,2.49,0,0,0,3.84-2L44.8,9.83A2.49,2.49,0,0,0,41.41,7.44Z" />
+                <path d="M22.87,32.84,37.4,14.93,19,28.2Z" />
+            </svg>
+            أرشــيــف (مـرتـضـى)
+        </a>
+    </div>
+
     <!-- 3D Background -->
     <canvas id="webgl-canvas"></canvas>
 
@@ -179,7 +205,7 @@
             </h1>
         </div>
         <!-- Scroll Down Indicator -->
-        <div class="scroll-down">
+        <div id="scroll-down-arrow" class="nav-arrow scroll-down">
             <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -189,42 +215,6 @@
     <!-- Section 2: Content -->
     <section class="section" id="section-2">
        <div class="max-w-5xl mx-auto relative z-10 px-6">
-            <!-- Features Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <!-- Feature 1: E2E Encryption -->
-                <div class="feature-card rounded-lg p-6">
-                    <div class="flex justify-center mb-4">
-                        <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">E2E Encryption</h3>
-                    <p class="text-gray-400 text-sm">Every message, call, and file is secured from end-to-end. Only you and the recipient have the keys.</p>
-                </div>
-                
-                <!-- Feature 2: Decentralized -->
-                <div class="feature-card rounded-lg p-6">
-                    <div class="flex justify-center mb-4">
-                        <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Decentralized Network</h3>
-                    <p class="text-gray-400 text-sm">No central servers. Your data is routed through a peer-to-peer network, ensuring no single point of failure or control.</p>
-                </div>
-                
-                <!-- Feature 3: Anonymity -->
-                <div class="feature-card rounded-lg p-6">
-                    <div class="flex justify-center mb-4">
-                        <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Total Anonymity</h3>
-                    <p class="text-gray-400 text-sm">Create an account without a phone number or email. Your identity is yours to protect.</p>
-                </div>
-            </div>
-            
             <!-- Telegram Button -->
             <a href="https://t.me/Arch_XM" target="_blank" rel="noopener noreferrer" 
                class="outline-btn inline-flex items-center justify-center px-6 py-3 text-sm font-bold rounded-lg text-white">
@@ -246,6 +236,7 @@
         const windowHalfY = window.innerHeight / 2;
         let lastIntersectedFace = null;
         let colorAttribute;
+        let lastPinchDistance = 0;
 
         function init() {
             // Scene
@@ -304,19 +295,62 @@
             directionalLight.position.set(1, 1, 0).normalize();
             scene.add(directionalLight);
             
-            // Handle window resizing and mouse movement
-            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            // Handle window resizing and input
+            document.addEventListener('mousemove', onPointerMove, false);
+            document.addEventListener('touchmove', onPointerMove, false);
+            document.addEventListener('touchstart', onTouchStart, false);
+            window.addEventListener('wheel', onMouseWheel, false);
             window.addEventListener('resize', onWindowResize, false);
         }
         
-        function onDocumentMouseMove(event) {
+        function onPointerMove(event) {
+            let clientX, clientY;
+            if (event.touches) {
+                if (event.touches.length === 1) {
+                    clientX = event.touches[0].clientX;
+                    clientY = event.touches[0].clientY;
+                } else if (event.touches.length === 2) {
+                    // Handle pinch zoom
+                    const dx = event.touches[0].clientX - event.touches[1].clientX;
+                    const dy = event.touches[0].clientY - event.touches[1].clientY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const delta = distance - lastPinchDistance;
+                    zoom(delta * -0.1); // Invert and scale
+                    lastPinchDistance = distance;
+                    return; // Don't process parallax or glow during pinch
+                } else {
+                    return;
+                }
+            } else {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+
             // For raycaster (normalized from -1 to +1)
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            mouse.x = (clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(clientY / window.innerHeight) * 2 + 1;
             
             // For camera parallax (pixel offset from center)
-            mouseX = event.clientX - windowHalfX;
-            mouseY = event.clientY - windowHalfY;
+            mouseX = clientX - windowHalfX;
+            mouseY = clientY - windowHalfY;
+        }
+
+        function onTouchStart(event) {
+            if (event.touches.length === 2) {
+                const dx = event.touches[0].clientX - event.touches[1].clientX;
+                const dy = event.touches[0].clientY - event.touches[1].clientY;
+                lastPinchDistance = Math.sqrt(dx * dx + dy * dy);
+            }
+        }
+
+        function onMouseWheel(event) {
+            zoom(event.deltaY * 0.05);
+        }
+
+        function zoom(delta) {
+            camera.position.z += delta;
+            // Clamp the zoom level to prevent clipping or going too far
+            camera.position.z = Math.max(20, Math.min(80, camera.position.z));
         }
 
         function onWindowResize() {
@@ -380,6 +414,7 @@
         // --- Section Transition Logic ---
         const section1 = document.getElementById('section-1');
         const section2 = document.getElementById('section-2');
+        const scrollDownArrow = document.getElementById('scroll-down-arrow');
         let isAnimating = false;
         let currentSection = 1;
 
@@ -389,7 +424,7 @@
                 section1.classList.add('hidden');
                 section2.classList.add('visible');
                 currentSection = 2;
-                setTimeout(() => { isAnimating = false; }, 1200); // Cooldown to match transition
+                setTimeout(() => { isAnimating = false; }, 1200);
             }
         }
 
@@ -403,28 +438,40 @@
             }
         }
 
-        // Mouse Wheel
-        window.addEventListener('wheel', (event) => {
-            if (event.deltaY > 0) { // Scrolling down
-                showSection2();
-            } else { // Scrolling up
-                showSection1();
+        // Click/Tap navigation for all devices
+        scrollDownArrow.addEventListener('click', showSection2);
+        
+        // Make the entire second section clickable to go back
+        section2.addEventListener('click', (event) => {
+            // Prevent going back if a link is clicked
+            if (event.target.closest('a')) {
+                return;
             }
-        }, { passive: false });
-
-        // Touch Events
-        let touchStartY = 0;
-        window.addEventListener('touchstart', (event) => {
-            touchStartY = event.touches[0].clientY;
+            showSection1();
         });
+        
+        // --- Intro Logic ---
+        window.addEventListener('load', () => {
+            const introOverlay = document.getElementById('intro-overlay');
+            const introButton = document.querySelector('.intro-button');
+            const webglCanvas = document.getElementById('webgl-canvas');
+            
+            // 1. Fade in the button
+            setTimeout(() => {
+                introButton.style.opacity = '1';
+            }, 500);
 
-        window.addEventListener('touchend', (event) => {
-            let touchEndY = event.changedTouches[0].clientY;
-            if (touchStartY - touchEndY > 50) { // Swiping up
-                 showSection2();
-            } else if (touchEndY - touchStartY > 50) { // Swiping down
-                showSection1();
-            }
+            // 2. After a delay, fade out the intro overlay
+            setTimeout(() => {
+                introOverlay.style.opacity = '0';
+            }, 2500);
+
+            // 3. When the overlay has faded, remove it and show the main content
+            introOverlay.addEventListener('transitionend', () => {
+                introOverlay.style.display = 'none';
+                webglCanvas.style.opacity = '1';
+                section1.classList.add('visible');
+            }, { once: true });
         });
 
         // Start the application
