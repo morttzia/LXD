@@ -297,9 +297,9 @@
             
             // Handle window resizing and input
             document.addEventListener('mousemove', onPointerMove, false);
-            document.addEventListener('touchmove', onPointerMove, false);
-            document.addEventListener('touchstart', onTouchStart, false);
-            window.addEventListener('wheel', onMouseWheel, false);
+            document.addEventListener('touchmove', onPointerMove, { passive: false }); // Added passive: false for touchmove
+            document.addEventListener('touchstart', onTouchStart, { passive: false }); // Added passive: false
+            window.addEventListener('wheel', onMouseWheel, { passive: false }); // Added passive: false
             window.addEventListener('resize', onWindowResize, false);
         }
         
@@ -310,14 +310,20 @@
                     clientX = event.touches[0].clientX;
                     clientY = event.touches[0].clientY;
                 } else if (event.touches.length === 2) {
+                    // Handle pinch zoom AND position move
+                    event.preventDefault(); // Prevent native zoom and scroll
+
+                    // Calculate average position for panning
+                    clientX = (event.touches[0].clientX + event.touches[1].clientX) / 2;
+                    clientY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
+
                     // Handle pinch zoom
                     const dx = event.touches[0].clientX - event.touches[1].clientX;
                     const dy = event.touches[0].clientY - event.touches[1].clientY;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     const delta = distance - lastPinchDistance;
-                    zoom(delta * -0.1); // Invert and scale
+                    zoom(delta * -0.2); // Increased sensitivity
                     lastPinchDistance = distance;
-                    return; // Don't process parallax or glow during pinch
                 } else {
                     return;
                 }
@@ -337,6 +343,7 @@
 
         function onTouchStart(event) {
             if (event.touches.length === 2) {
+                event.preventDefault(); // Prevent native zoom on touchstart
                 const dx = event.touches[0].clientX - event.touches[1].clientX;
                 const dy = event.touches[0].clientY - event.touches[1].clientY;
                 lastPinchDistance = Math.sqrt(dx * dx + dy * dy);
@@ -344,13 +351,14 @@
         }
 
         function onMouseWheel(event) {
-            zoom(event.deltaY * 0.05);
+            event.preventDefault(); // Prevent native zoom
+            zoom(event.deltaY * 0.1); // Increased sensitivity
         }
 
         function zoom(delta) {
             camera.position.z += delta;
             // Clamp the zoom level to prevent clipping or going too far
-            camera.position.z = Math.max(20, Math.min(80, camera.position.z));
+            camera.position.z = Math.max(10, Math.min(100, camera.position.z)); // Wider range
         }
 
         function onWindowResize() {
