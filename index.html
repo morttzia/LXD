@@ -27,6 +27,14 @@
             font-family: 'Cairo', sans-serif;
             color: var(--text-color);
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") 12 12, auto;
+            overscroll-behavior-y: contain;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         #webgl-canvas {
             position: fixed; top: 0; left: 0;
@@ -194,13 +202,15 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .loading-screen.hidden {
+            opacity: 0;
+            transform: scale(0.8);
         }
         .loading-text {
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
             animation: pulse 1.5s infinite;
+            transform: translateY(-1.5rem);
         }
         @keyframes pulse {
             0%, 100% { opacity: 0.5; }
@@ -226,7 +236,7 @@
 </head>
 <body dir="rtl">
     <div class="loading-screen" id="loading-screen">
-        <div class="loading-text">جاري التحميل...</div>
+        <div class="loading-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider">LXD</div>
     </div>
     
     <canvas id="webgl-canvas"></canvas>
@@ -256,37 +266,37 @@
            <div class="max-w-6xl w-full mx-auto relative z-10 px-4 sm:px-6">
                 <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">ميزاتنا</h2>
                 <div class="space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-8">
-                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
-                        <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
+                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-col items-center text-center">
+                        <div class="flex-shrink-0 mb-4">
                             <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <div class="text-right md:text-center">
+                        <div>
                             <h3 class="text-lg font-bold mb-2">أدوات الذكاء الصناعي</h3>
                             <p class="text-sm text-gray-400">نطوّر حلول ذكاء اصطناعي لتحليل وأتمتة.</p>
                             <p class="text-sm text-gray-400 mt-1">نوفّر أدوات تجعل عملك أسرع وأكثر ذكاءً.</p>
                         </div>
                     </div>
-                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
-                        <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
+                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-col items-center text-center">
+                        <div class="flex-shrink-0 mb-4">
                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <div class="text-right md:text-center">
+                        <div>
                             <h3 class="text-lg font-bold mb-2">تطوير الألعاب المبتكرة</h3>
                             <p class="text-sm text-gray-400">نبتكر ألعابًا بأسلوب ممتع وتجربة غامرة.</p>
                             <p class="text-sm text-gray-400 mt-1">نجمع بين القصة الجذابة والتصميم المميز.</p>
                         </div>
                     </div>
-                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
-                        <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
+                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-col items-center text-center">
+                        <div class="flex-shrink-0 mb-4">
                             <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                             </svg>
                         </div>
-                        <div class="text-right md:text-center">
+                        <div>
                             <h3 class="text-lg font-bold mb-2">برمجة المواقع والبرامج</h3>
                             <p class="text-sm text-gray-400">نصمّم مواقع وبرامج تلبي الحاجة.</p>
                             <p class="text-sm text-gray-400 mt-1">نضمن أداءً سلسًا ومظهرًا عصريًا.</p>
@@ -311,7 +321,7 @@
                                 </svg>
                                 <div>
                                     <p class="font-medium">انستاكرام</p>
-                                    <p class="text-gray-400 text-sm">2,800 متابع</p>
+                                    <p class="text-gray-400 text-sm">2,800+ متابع</p>
                                 </div>
                             </a>
                             <a href="https://t.me/lxd_iq" target="_blank" rel="noopener noreferrer" class="flex items-center text-right hover:opacity-80 transition-opacity">
@@ -321,7 +331,7 @@
                                 </svg>
                                 <div>
                                     <p class="font-medium">تليكرام</p>
-                                    <p class="text-gray-400 text-sm">800 متابع</p>
+                                    <p class="text-gray-400 text-sm">800+ متابع</p>
                                 </div>
                             </a>
                         </div>
@@ -367,6 +377,7 @@
             
             const canvas = document.getElementById('webgl-canvas');
             renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setClearColor(0x000000, 0);
             
@@ -439,7 +450,7 @@
             
             setTimeout(() => {
                 const loadingScreen = document.getElementById('loading-screen');
-                loadingScreen.style.opacity = '0';
+                loadingScreen.classList.add('hidden');
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
                 }, 500);
