@@ -1,491 +1,665 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LXD - Coming Soon</title>
+    <title>LXD - نموذج جديد</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Import Three.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --background-color: #000000;
+            --text-color: #FFFFFF;
+            --text-color-muted: #999999;
+            --card-background: rgba(10, 10, 10, 0.7);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --card-border-hover: rgba(255, 255, 255, 0.7);
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+        }
         html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden; /* Prevent native scrollbars */
-            background-color: #000000;
-            font-family: 'Poppins', 'Cairo', sans-serif;
-            /* New minimalist crosshair cursor */
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24' fill='none' stroke='white' stroke-width='1.5'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") 12 12, auto;
+            margin: 0; padding: 0; height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-color);
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") 12 12, auto;
         }
-
-        /* --- Intro Overlay --- */
-        #intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        .intro-button {
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        /* Canvas for the 3D animation - Fixed to stay in background */
         #webgl-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 1;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
         }
-
-        .section {
-            height: 100vh;
+        .scene-container {
             width: 100vw;
+            height: 100vh;
             position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
+            z-index: 2;
+        }
+        .section {
+            height: 100%; width: 100%;
+            position: absolute; top: 0; left: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
             text-align: center;
-            transition: opacity 1.2s ease-in-out, visibility 1.2s;
-        }
-
-        #section-1 {
-            opacity: 0; /* Starts hidden */
-            visibility: hidden;
-            z-index: 3;
-        }
-
-        #section-2 {
+            transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.7s cubic-bezier(0.76, 0, 0.24, 1);
             opacity: 0;
-            visibility: hidden;
-            z-index: 4;
+            pointer-events: none;
+            padding: 0 1rem;
         }
-        
-        .visible {
-            opacity: 1 !important;
-            visibility: visible !important;
+        .section.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
         }
-
-        .hidden {
-            opacity: 0 !important;
-            visibility: hidden !important;
+        .section.exit-up {
+            transform: translateY(-100%) scale(0.9);
+            opacity: 0;
         }
-
-        /* --- Glitch Effect on Title --- */
+        .section.exit-down {
+            transform: translateY(100%) scale(0.9);
+            opacity: 0;
+        }
+        .section.enter-from-up {
+            transform: translateY(-100%) scale(0.9);
+            opacity: 0;
+        }
+        .section.enter-from-down {
+            transform: translateY(100%) scale(0.9);
+            opacity: 0;
+        }
         .glitch-text {
-            position: relative;
-            color: white;
-            animation: float 6s ease-in-out infinite;
+            position: relative; color: white;
+            animation: float 8s ease-in-out infinite;
         }
-        
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
         }
-
-        .glitch-text::before,
-        .glitch-text::after {
+        .glitch-text::before, .glitch-text::after {
             content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--background-color);
             overflow: hidden;
             clip: rect(0, 0, 0, 0);
         }
-
         .glitch-text::before {
             left: 2px;
-            text-shadow: -2px 0 #e0e0e0; /* Black and white glitch */
-            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+            text-shadow: -2px 0 #ffffff;
+            animation: glitch-anim-1 3s infinite linear alternate-reverse;
         }
-
         .glitch-text::after {
             left: -2px;
-            text-shadow: -2px 0 #ffffff, 2px 2px #a0a0a0; /* Black and white glitch */
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+            text-shadow: -2px 0 #aaaaaa, 2px 2px #555555;
+            animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
         }
-        
-        @keyframes glitch-anim-1 {
-            0% { clip: rect(42px, 9999px, 44px, 0); }
-            20% { clip: rect(12px, 9999px, 60px, 0); }
-            40% { clip: rect(5px, 9999px, 80px, 0); }
-            60% { clip: rect(70px, 9999px, 10px, 0); }
-            80% { clip: rect(90px, 9999px, 50px, 0); }
-            100% { clip: rect(30px, 9999px, 130px, 0); }
+        @keyframes glitch-anim-1 { 0% { clip: rect(42px, 9999px, 44px, 0); } 20% { clip: rect(12px, 9999px, 60px, 0); } 40% { clip: rect(5px, 9999px, 80px, 0); } 60% { clip: rect(70px, 9999px, 10px, 0); } 80% { clip: rect(90px, 9999px, 50px, 0); } 100% { clip: rect(30px, 9999px, 130px, 0); } }
+        @keyframes glitch-anim-2 { 0% { clip: rect(2px, 9999px, 90px, 0); } 20% { clip: rect(80px, 9999px, 120px, 0); } 40% { clip: rect(40px, 9999px, 20px, 0); } 60% { clip: rect(130px, 9999px, 50px, 0); } 80% { clip: rect(10px, 9999px, 70px, 0); } 100% { clip: rect(60px, 9999px, 140px, 0); } }
+        .glass-ui {
+            background: var(--card-background);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(2px, 9999px, 90px, 0); }
-            20% { clip: rect(80px, 9999px, 120px, 0); }
-            40% { clip: rect(40px, 9999px, 20px, 0); }
-            60% { clip: rect(130px, 9999px, 50px, 0); }
-            80% { clip: rect(10px, 9999px, 70px, 0); }
-            100% { clip: rect(60px, 9999px, 140px, 0); }
+        .glass-ui:hover {
+            border-color: var(--card-border-hover);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
-
-        /* --- Button Style --- */
-        .outline-btn {
-            background-color: rgba(30,30,30,0.5);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease-in-out;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 5px rgba(255,255,255,0.2), inset 0 0 5px rgba(255,255,255,0.1);
+        .feature-card svg { color: var(--text-color); transition: color 0.3s ease; }
+        .feature-card:hover svg { color: #ffffff; }
+        #side-nav {
+            position: fixed;
+            top: 50%;
+            right: 1.5rem;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1.5rem;
         }
-
-        .outline-btn:hover {
-            border-color: white;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-        
-        /* --- Navigation Arrows --- */
-        .nav-arrow {
+        #side-nav::before {
+            content: '';
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: pulse 2s infinite;
-            cursor: pointer;
-            z-index: 10;
+            top: 0;
+            bottom: 0;
+            right: -1px;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: -1;
         }
-        .scroll-down {
-            bottom: 2rem;
+        #nav-progress {
+            position: absolute;
+            top: 0;
+            right: -2px;
+            width: 3px;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+            transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 3;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+            height: 16px; 
+            padding-right: 1rem;
+            width: 120px;
+        }
+        .nav-label {
+            color: var(--text-color-muted);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            text-align: right;
+            width: 100%;
+        }
+        .nav-item:hover .nav-label {
+            color: var(--text-color);
+        }
+        .nav-item.active .nav-label {
+            color: #ffffff;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        .loading-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
-        @keyframes pulse {
-            0% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.1); }
-            100% { transform: translateX(-50%) scale(1); }
+        @media (max-width: 767px) {
+            .nav-label {
+                display: none;
+            }
+            #side-nav {
+                right: 0.5rem;
+            }
+            .nav-item {
+                 padding-right: 0.5rem;
+                 width: auto;
+            }
+            .footer {
+                padding: 0.5rem;
+            }
         }
     </style>
 </head>
-<body class="text-white">
-    
-    <!-- Intro Overlay -->
-    <div id="intro-overlay">
-        <a href="https://t.me/Arch_XM" target="_blank" rel="noopener noreferrer" 
-           class="intro-button outline-btn inline-flex items-center justify-center px-6 py-3 text-sm font-bold rounded-lg text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 48 48">
-                <path d="M41.41,7.44l-32.8,12.26a2.47,2.47,0,0,0,0,4.62L19,28.2l-1.3,8.71a2.49,2.49,0,0,0,4.13,2.13L26.38,35,34,40.63a2.49,2.49,0,0,0,3.84-2L44.8,9.83A2.49,2.49,0,0,0,41.41,7.44Z" />
-                <path d="M22.87,32.84,37.4,14.93,19,28.2Z" />
-            </svg>
-            أرشــيــف (مـرتـضـى)
-        </a>
+<body dir="rtl">
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-text">جاري التحميل...</div>
     </div>
-
-    <!-- 3D Background -->
-    <canvas id="webgl-canvas"></canvas>
-
-    <!-- Section 1: Main Title -->
-    <section class="section" id="section-1">
-        <div class="relative z-10">
-            <h1 class="glitch-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider mb-4" data-text="LXD">
-                LXD
-            </h1>
-        </div>
-        <!-- Scroll Down Indicator -->
-        <div id="scroll-down-arrow" class="nav-arrow scroll-down">
-            <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </div>
-    </section>
     
-    <!-- Section 2: Content -->
-    <section class="section" id="section-2">
-       <div class="max-w-5xl mx-auto relative z-10 px-6">
-            <!-- Telegram Button -->
-            <a href="https://t.me/Arch_XM" target="_blank" rel="noopener noreferrer" 
-               class="outline-btn inline-flex items-center justify-center px-6 py-3 text-sm font-bold rounded-lg text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 48 48">
-                    <path d="M41.41,7.44l-32.8,12.26a2.47,2.47,0,0,0,0,4.62L19,28.2l-1.3,8.71a2.49,2.49,0,0,0,4.13,2.13L26.38,35,34,40.63a2.49,2.49,0,0,0,3.84-2L44.8,9.83A2.49,2.49,0,0,0,41.41,7.44Z" />
-                    <path d="M22.87,32.84,37.4,14.93,19,28.2Z" />
-                </svg>
-                أرشــيــف (مـرتـضـى)
-            </a>
-           </div>
+    <canvas id="webgl-canvas"></canvas>
+    <div class="scene-container">
+        <nav id="side-nav"></nav>
+        
+        <section class="section active" id="section-1" data-index="0" data-name="الرئيسية">
+            <div class="relative z-10">
+                <h1 class="glitch-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider mb-4" data-text="LXD">LXD</h1>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">حيث تتحول الأفكار إلى واقع رقمي</p>
+            </div>
         </section>
-
+        
+        <section class="section" id="section-2" data-index="1" data-name="البيان">
+            <div class="max-w-4xl mx-auto relative z-10 px-6 md:px-10">
+                <h2 class="text-xl sm:text-3xl md:text-4xl font-bold mb-6">حيث تتحول الأفكار إلى واقع رقمي.</h2>
+                <p class="text-sm sm:text-base md:text-2xl text-gray-300 leading-relaxed mb-2">
+                    شركة متخصصة في تطوير التقنيات المفيدة، مهمتنا هي
+                </p>
+                <p class="text-sm sm:text-base md:text-2xl text-gray-300 leading-relaxed">
+                    أخذ فكرة تدور في ذهنك ونحولها إلى واقع — ومجانًا.
+                </p>
+            </div>
+        </section>
+        
+        <section class="section" id="section-3" data-index="2" data-name="الميزات">
+           <div class="max-w-6xl w-full mx-auto relative z-10 px-4 sm:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">ميزاتنا</h2>
+                <div class="space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-8">
+                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
+                        <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
+                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="text-right md:text-center">
+                            <h3 class="text-lg font-bold mb-2">أدوات الذكاء الصناعي</h3>
+                            <p class="text-sm text-gray-400">نطوّر حلول ذكاء اصطناعي لتحليل وأتمتة.</p>
+                            <p class="text-sm text-gray-400 mt-1">نوفّر أدوات تجعل عملك أسرع وأكثر ذكاءً.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
+                        <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
+                           <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="text-right md:text-center">
+                            <h3 class="text-lg font-bold mb-2">تطوير الألعاب المبتكرة</h3>
+                            <p class="text-sm text-gray-400">نبتكر ألعابًا بأسلوب ممتع وتجربة غامرة.</p>
+                            <p class="text-sm text-gray-400 mt-1">نجمع بين القصة الجذابة والتصميم المميز.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
+                        <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
+                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <div class="text-right md:text-center">
+                            <h3 class="text-lg font-bold mb-2">برمجة المواقع والبرامج</h3>
+                            <p class="text-sm text-gray-400">نصمّم مواقع وبرامج تلبي الحاجة.</p>
+                            <p class="text-sm text-gray-400 mt-1">نضمن أداءً سلسًا ومظهرًا عصريًا.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="section-4" data-index="3" data-name="تواصل">
+            <div class="max-w-4xl mx-auto relative z-10 px-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center">تواصل معنا</h2>
+                <p class="text-lg text-gray-300 mb-10 text-center max-w-2xl mx-auto">نحن في انتظارك.</p>
+                
+                <div class="flex justify-center">
+                    <div class="glass-ui rounded-xl p-8 w-full max-w-2xl">
+                        <h3 class="text-xl font-bold mb-4">تابعنا على</h3>
+                        <div class="space-y-6">
+                            <a href="https://www.instagram.com/lxd.iq/?utm_source=ig_web_button_share_sheet" target="_blank" rel="noopener noreferrer" class="flex items-center text-right hover:opacity-80 transition-opacity">
+                                <svg class="h-8 w-8 ml-4 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.07 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44c0-.795-.645-1.44-1.441-1.44z"/>
+                                </svg>
+                                <div>
+                                    <p class="font-medium">انستاكرام</p>
+                                    <p class="text-gray-400 text-sm">2,800 متابع</p>
+                                </div>
+                            </a>
+                            <a href="https://t.me/lxd_iq" target="_blank" rel="noopener noreferrer" class="flex items-center text-right hover:opacity-80 transition-opacity">
+                                <svg class="h-8 w-8 ml-4 text-indigo-400" fill="currentColor" viewBox="0 0 48 48">
+                                    <path d="M41.41,7.44l-32.8,12.26a2.47,2.47,0,0,0,0,4.62L19,28.2l-1.3,8.71a2.49,2.49,0,0,0,4.13,2.13L26.38,35,34,40.63a2.49,2.49,0,0,0,3.84-2L44.8,9.83A2.49,2.49,0,0,0,41.41,7.44Z" />
+                                    <path d="M22.87,32.84,37.4,14.93,19,28.2Z" />
+                                </svg>
+                                <div>
+                                    <p class="font-medium">تليكرام</p>
+                                    <p class="text-gray-400 text-sm">800 متابع</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="footer">
+        <div class="flex items-center">
+            <span class="text-gray-400 text-sm">© 2025 LXD</span>
+        </div>
+    </div>
+    
     <script>
-        // --- Three.js Scene Setup ---
-        let scene, camera, renderer, terrain, raycaster;
+        let scene, camera, renderer, terrain, raycaster, pointLight, stars;
         let mouse = new THREE.Vector2();
         let mouseX = 0, mouseY = 0;
         const windowHalfX = window.innerWidth / 2;
         const windowHalfY = window.innerHeight / 2;
         let lastIntersectedFace = null;
         let colorAttribute;
-        let lastPinchDistance = 0;
+        let lightTarget = new THREE.Vector3();
 
+        const sectionConfigs = [
+            { zoom: 0.7, z: 45 },
+            { zoom: 1, z: 40 },
+            { zoom: 1.5, z: 35 },
+            { zoom: 2, z: 30 }
+        ];
+        let targetZoom = sectionConfigs[0].zoom;
+        let targetZ = sectionConfigs[0].z;
+        
         function init() {
-            // Scene
             scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x000000, 0.03);
-
-            // Camera
+            scene.fog = new THREE.FogExp2(0x000000, 0.02);
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-            camera.position.set(0, 15, 40);
-
-            // Raycaster for mouse interaction
+            camera.position.set(0, 20, targetZ);
+            camera.zoom = targetZoom;
+            camera.updateProjectionMatrix();
             raycaster = new THREE.Raycaster();
-
-            // Renderer
+            
             const canvas = document.getElementById('webgl-canvas');
             renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setClearColor(0x000000, 0);
-
-            // --- Low Poly Terrain ---
-            const geometry = new THREE.PlaneGeometry(250, 250, 60, 60);
             
-            // Displace vertices to create mountains
-            const vertices = geometry.attributes.position.array;
-            for (let i = 2; i < vertices.length; i += 3) {
-                vertices[i] = Math.random() * 20;
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.7,
+                transparent: true
+            });
+            
+            const starsVertices = [];
+            for (let i = 0; i < 2000; i++) {
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 2000;
+                starsVertices.push(x, y, z);
             }
+            
+            starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+            stars = new THREE.Points(starsGeometry, starsMaterial);
+            scene.add(stars);
+            
+            const geometry = new THREE.PlaneGeometry(300, 300, 60, 60);
+            const vertices = geometry.attributes.position.array;
+            
+            function noise(x, y) {
+                let n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+                return n - Math.floor(n);
+            }
+            
+            for (let i = 0; i < vertices.length; i += 3) {
+                let x = vertices[i];
+                let y = vertices[i+1];
+                vertices[i+2] = noise(x/20, y/20) * 30;
+            }
+            
             geometry.attributes.position.needsUpdate = true;
             geometry.computeVertexNormals();
             
-            // Add vertex colors attribute
             const colors = [];
-            const defaultColor = new THREE.Color(0x555555);
+            const defaultColor = new THREE.Color(0x333333);
             for (let i = 0; i < geometry.attributes.position.count; i++) {
                 colors.push(defaultColor.r, defaultColor.g, defaultColor.b);
             }
             geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
             colorAttribute = geometry.attributes.color;
-
-            // Material for the wireframe look that uses vertex colors
+            
             const material = new THREE.MeshPhongMaterial({
-                vertexColors: true,
-                wireframe: true,
-                shininess: 50,
+                vertexColors: true, 
+                wireframe: true, 
+                shininess: 80,
             });
-
+            
             terrain = new THREE.Mesh(geometry, material);
-            terrain.rotation.x = -Math.PI / 2.5; // Tilt the plane
+            terrain.rotation.x = -Math.PI / 2.3;
             scene.add(terrain);
-
-            // --- Lighting ---
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            
+            scene.add(new THREE.AmbientLight(0xffffff, 0.1));
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
             directionalLight.position.set(1, 1, 0).normalize();
             scene.add(directionalLight);
             
-            // Handle window resizing and input
-            document.addEventListener('mousemove', onPointerMove, false);
-            document.addEventListener('touchmove', onPointerMove, { passive: false }); // Added passive: false for touchmove
-            document.addEventListener('touchstart', onTouchStart, { passive: false }); // Added passive: false
-            window.addEventListener('wheel', onMouseWheel, { passive: false }); // Added passive: false
+            pointLight = new THREE.PointLight(0x4F46E5, 2, 100);
+            scene.add(pointLight);
+            
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('touchstart', onDocumentTouchStart, false);
+            document.addEventListener('touchmove', onDocumentTouchMove, false);
             window.addEventListener('resize', onWindowResize, false);
+            
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1500);
         }
         
-        function onPointerMove(event) {
-            let clientX, clientY;
-            if (event.touches) {
-                if (event.touches.length === 1) {
-                    clientX = event.touches[0].clientX;
-                    clientY = event.touches[0].clientY;
-                } else if (event.touches.length === 2) {
-                    // Handle pinch zoom AND position move
-                    event.preventDefault(); // Prevent native zoom and scroll
-
-                    // Calculate average position for panning
-                    clientX = (event.touches[0].clientX + event.touches[1].clientX) / 2;
-                    clientY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
-
-                    // Handle pinch zoom
-                    const dx = event.touches[0].clientX - event.touches[1].clientX;
-                    const dy = event.touches[0].clientY - event.touches[1].clientY;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const delta = distance - lastPinchDistance;
-                    zoom(delta * -0.2); // Increased sensitivity
-                    lastPinchDistance = distance;
-                } else {
-                    return;
-                }
-            } else {
-                clientX = event.clientX;
-                clientY = event.clientY;
-            }
-
-            // For raycaster (normalized from -1 to +1)
-            mouse.x = (clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(clientY / window.innerHeight) * 2 + 1;
-            
-            // For camera parallax (pixel offset from center)
-            mouseX = clientX - windowHalfX;
-            mouseY = clientY - windowHalfY;
+        function onDocumentMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            mouseX = event.clientX - windowHalfX;
+            mouseY = event.clientY - windowHalfY;
         }
 
-        function onTouchStart(event) {
-            if (event.touches.length === 2) {
-                event.preventDefault(); // Prevent native zoom on touchstart
-                const dx = event.touches[0].clientX - event.touches[1].clientX;
-                const dy = event.touches[0].clientY - event.touches[1].clientY;
-                lastPinchDistance = Math.sqrt(dx * dx + dy * dy);
+        function onDocumentTouchStart(event) {
+            if (event.touches.length === 1) {
+                event.preventDefault();
+                mouseX = event.touches[0].pageX - windowHalfX;
+                mouseY = event.touches[0].pageY - windowHalfY;
+                mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
             }
         }
 
-        function onMouseWheel(event) {
-            event.preventDefault(); // Prevent native zoom
-            zoom(event.deltaY * 0.1); // Increased sensitivity
+        function onDocumentTouchMove(event) {
+            if (event.touches.length === 1) {
+                event.preventDefault();
+                mouseX = event.touches[0].pageX - windowHalfX;
+                mouseY = event.touches[0].pageY - windowHalfY;
+                mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
+            }
         }
-
-        function zoom(delta) {
-            camera.position.z += delta;
-            // Clamp the zoom level to prevent clipping or going too far
-            camera.position.z = Math.max(10, Math.min(100, camera.position.z)); // Wider range
-        }
-
+        
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
-        // Animation loop
+        
         function animate() {
             requestAnimationFrame(animate);
+            camera.position.x += (mouseX / 15 - camera.position.x) * 0.01;
+            camera.position.y += (-mouseY / 15 - camera.position.y + 20) * 0.01;
+            
+            camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.05);
+            camera.zoom = THREE.MathUtils.lerp(camera.zoom, targetZoom, 0.05);
+            camera.updateProjectionMatrix();
 
-            // --- Camera Parallax Movement ---
-            camera.position.x += (mouseX / 10 - camera.position.x) * 0.01;
-            camera.position.y += (-mouseY / 10 - camera.position.y + 15) * 0.01;
             camera.lookAt(scene.position);
             
-            // --- Raycaster Glowing Effect ---
             raycaster.setFromCamera(mouse, camera);
+            const lightIntersects = raycaster.intersectObject(terrain);
+            if (lightIntersects.length > 0) {
+                lightTarget.copy(lightIntersects[0].point).add(new THREE.Vector3(0, 5, 0));
+            }
+            pointLight.position.lerp(lightTarget, 0.05);
+            
             const intersects = raycaster.intersectObject(terrain);
-
             if (intersects.length > 0) {
-                const intersect = intersects[0];
-                const face = intersect.face;
-
+                const face = intersects[0].face;
                 if (lastIntersectedFace !== face) {
                     if (lastIntersectedFace) {
-                        const defaultColor = new THREE.Color(0x555555);
+                        const defaultColor = new THREE.Color(0x333333);
                         colorAttribute.setXYZ(lastIntersectedFace.a, defaultColor.r, defaultColor.g, defaultColor.b);
                         colorAttribute.setXYZ(lastIntersectedFace.b, defaultColor.r, defaultColor.g, defaultColor.b);
                         colorAttribute.setXYZ(lastIntersectedFace.c, defaultColor.r, defaultColor.g, defaultColor.b);
                     }
-
                     const highlightColor = new THREE.Color(0xffffff);
                     colorAttribute.setXYZ(face.a, highlightColor.r, highlightColor.g, highlightColor.b);
                     colorAttribute.setXYZ(face.b, highlightColor.r, highlightColor.g, highlightColor.b);
                     colorAttribute.setXYZ(face.c, highlightColor.r, highlightColor.g, highlightColor.b);
-                    
                     colorAttribute.needsUpdate = true;
                     lastIntersectedFace = face;
                 }
-            } else {
-                 if (lastIntersectedFace) {
-                    const defaultColor = new THREE.Color(0x555555);
-                    colorAttribute.setXYZ(lastIntersectedFace.a, defaultColor.r, defaultColor.g, defaultColor.b);
-                    colorAttribute.setXYZ(lastIntersectedFace.b, defaultColor.r, defaultColor.g, defaultColor.b);
-                    colorAttribute.setXYZ(lastIntersectedFace.c, defaultColor.r, defaultColor.g, defaultColor.b);
-                    colorAttribute.needsUpdate = true;
-                    lastIntersectedFace = null;
-                 }
+            } else if (lastIntersectedFace) {
+                const defaultColor = new THREE.Color(0x333333);
+                colorAttribute.setXYZ(lastIntersectedFace.a, defaultColor.r, defaultColor.g, defaultColor.b);
+                colorAttribute.setXYZ(lastIntersectedFace.b, defaultColor.r, defaultColor.g, defaultColor.b);
+                colorAttribute.setXYZ(lastIntersectedFace.c, defaultColor.r, defaultColor.g, defaultColor.b);
+                colorAttribute.needsUpdate = true;
+                lastIntersectedFace = null;
             }
-
-            // --- Terrain Rotation ---
-            if (terrain) {
-                terrain.rotation.z += 0.0003;
-            }
+            
+            if (terrain) terrain.rotation.z += 0.0004;
+            if (stars) stars.rotation.y += 0.0002;
             
             renderer.render(scene, camera);
         }
-
-        // --- Section Transition Logic ---
-        const section1 = document.getElementById('section-1');
-        const section2 = document.getElementById('section-2');
-        const scrollDownArrow = document.getElementById('scroll-down-arrow');
+        
+        const sections = document.querySelectorAll('.section');
+        const navContainer = document.getElementById('side-nav');
+        let currentSectionIndex = 0;
         let isAnimating = false;
-        let currentSection = 1;
-
-        function showSection2() {
-            if (currentSection === 1 && !isAnimating) {
-                isAnimating = true;
-                section1.classList.add('hidden');
-                section2.classList.add('visible');
-                currentSection = 2;
-                setTimeout(() => { isAnimating = false; }, 1200);
-            }
-        }
-
-        function showSection1() {
-             if (currentSection === 2 && !isAnimating) {
-                isAnimating = true;
-                section2.classList.remove('visible');
-                section1.classList.remove('hidden');
-                currentSection = 1;
-                setTimeout(() => { isAnimating = false; }, 1200);
-            }
-        }
-
-        // Click/Tap navigation for all devices
-        scrollDownArrow.addEventListener('click', showSection2);
+        let navProgress;
+        const scrollCooldown = 1000;
+        let lastScrollTime = 0;
         
-        // Make the entire second section clickable to go back
-        section2.addEventListener('click', (event) => {
-            // Prevent going back if a link is clicked
-            if (event.target.closest('a')) {
-                return;
-            }
-            showSection1();
-        });
-        
-        // --- Intro Logic ---
-        window.addEventListener('load', () => {
-            const introOverlay = document.getElementById('intro-overlay');
-            const introButton = document.querySelector('.intro-button');
-            const webglCanvas = document.getElementById('webgl-canvas');
+        function createNavItems() {
+            navProgress = document.createElement('div');
+            navProgress.id = 'nav-progress';
+            navContainer.appendChild(navProgress);
             
-            // 1. Fade in the button
-            setTimeout(() => {
-                introButton.style.opacity = '1';
-            }, 500);
+            sections.forEach((section, index) => {
+                const name = section.getAttribute('data-name');
+                const item = document.createElement('div');
+                item.classList.add('nav-item');
+                item.dataset.index = index;
+                
+                const label = document.createElement('span');
+                label.classList.add('nav-label');
+                label.textContent = name;
+                
+                item.appendChild(label);
+                item.addEventListener('click', () => goToSection(index));
+                navContainer.appendChild(item);
+            });
+        }
+        
+        function updateNav() {
+            const items = document.querySelectorAll('.nav-item');
+            let firstItem, lastItem;
+            
+            items.forEach((item, index) => {
+                const isActive = parseInt(item.dataset.index) === currentSectionIndex;
+                item.classList.toggle('active', isActive);
+                if (index === 0) firstItem = item;
+                if (index === sections.length - 1) lastItem = item;
+            });
+            
+            const activeItem = document.querySelector('.nav-item.active');
+            if (activeItem && firstItem && lastItem) {
+                const firstItemTop = firstItem.offsetTop;
+                const activeItemTop = activeItem.offsetTop;
+                
+                navProgress.style.top = `${firstItemTop}px`;
+                navProgress.style.height = `${activeItemTop - firstItemTop + activeItem.offsetHeight}px`;
+            }
+        }
+        
+        function goToSection(index) {
+            if (index === currentSectionIndex || isAnimating) return;
+            isAnimating = true;
+            
+            targetZoom = sectionConfigs[index].zoom;
+            targetZ = sectionConfigs[index].z;
 
-            // 2. After a delay, fade out the intro overlay
+            const currentSection = sections[currentSectionIndex];
+            const nextSection = sections[index];
+            const isGoingForward = index > currentSectionIndex;
+            
+            if (isGoingForward) {
+                currentSection.classList.add('exit-up');
+                nextSection.classList.add('enter-from-down');
+            } else {
+                currentSection.classList.add('exit-down');
+                nextSection.classList.add('enter-from-up');
+            }
+            
+            nextSection.classList.add('active');
+            
             setTimeout(() => {
-                introOverlay.style.opacity = '0';
-            }, 2500);
-
-            // 3. When the overlay has faded, remove it and show the main content
-            introOverlay.addEventListener('transitionend', () => {
-                introOverlay.style.display = 'none';
-                webglCanvas.style.opacity = '1';
-                section1.classList.add('visible');
-            }, { once: true });
+                currentSection.classList.remove('active');
+                currentSection.className = 'section';
+                nextSection.className = 'section active';
+                
+                currentSectionIndex = index;
+                updateNav();
+                
+                isAnimating = false;
+            }, 800);
+        }
+        
+        window.addEventListener('wheel', (event) => {
+            const now = Date.now();
+            if (now - lastScrollTime < scrollCooldown) return;
+            lastScrollTime = now;
+            if (isAnimating) return;
+            
+            const direction = event.deltaY > 0 ? 1 : -1;
+            const nextIndex = currentSectionIndex + direction;
+            if (nextIndex >= 0 && nextIndex < sections.length) {
+                goToSection(nextIndex);
+            }
+        }, { passive: true });
+        
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (event) => { touchStartY = event.touches[0].clientY; });
+        window.addEventListener('touchend', (event) => {
+            if (isAnimating) return;
+            let touchEndY = event.changedTouches[0].clientY;
+            let nextIndex = currentSectionIndex;
+            if (touchStartY - touchEndY > 50) {
+                nextIndex++;
+            } else if (touchEndY - touchStartY > 50) {
+                nextIndex--;
+            }
+            if (nextIndex !== currentSectionIndex && nextIndex >= 0 && nextIndex < sections.length) {
+                goToSection(nextIndex);
+            }
         });
-
-        // Start the application
+        
+        window.addEventListener('keydown', (event) => {
+            if (isAnimating) return;
+            if (event.key === 'ArrowDown') {
+                const nextIndex = currentSectionIndex + 1;
+                if (nextIndex < sections.length) {
+                    goToSection(nextIndex);
+                }
+            } else if (event.key === 'ArrowUp') {
+                const nextIndex = currentSectionIndex - 1;
+                if (nextIndex >= 0) {
+                    goToSection(nextIndex);
+                }
+            }
+        });
+        
         init();
         animate();
+        createNavItems();
+        updateNav();
     </script>
-
 </body>
 </html>
