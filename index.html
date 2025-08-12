@@ -216,10 +216,57 @@
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
         }
-        /* New font class for English text */
         .font-rajdhani {
             font-family: 'Rajdhani', sans-serif;
         }
+
+        /* === TIMELINE STYLES START === */
+        .timeline-item {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .timeline-dot {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .timeline-description {
+            opacity: 0;
+            transform: translateY(1rem);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            position: absolute;
+            top: 100%;
+            margin-top: 1.5rem;
+            width: 250px;
+        }
+        
+        .timeline-item.is-active .timeline-dot {
+            background-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+        .timeline-item.is-active .timeline-description {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .timeline-container.is-active .timeline-item:not(.is-active) {
+            transform: scale(0.9);
+            opacity: 0.7; /* Increased opacity */
+        }
+        
+        @media (hover: hover) {
+            .timeline-item:hover .timeline-dot {
+                background-color: var(--primary-color);
+                transform: scale(1.1);
+            }
+            .timeline-item:hover .timeline-description {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .timeline-container:hover .timeline-item:not(:hover) {
+                transform: scale(0.9);
+                opacity: 0.7; /* Increased opacity */
+            }
+        }
+        /* === TIMELINE STYLES END === */
 
         @media (max-width: 767px) {
             .nav-label {
@@ -234,15 +281,38 @@
             }
             .footer {
                 padding: 0.5rem;
-                font-size: 0.75rem; /* Smaller font for footer on mobile */
+                font-size: 0.75rem;
             }
             #section-2 h2 {
-                font-size: 1.7rem; /* Smaller title on mobile to fit one line */
+                font-size: 1.7rem;
             }
             #section-2 p {
-                font-size: 0.9rem; /* Smaller Arabic text on mobile */
-                line-height: 1.6; /* Adjust line height for readability */
+                font-size: 0.9rem;
+                line-height: 1.6;
             }
+            
+            /* === MOBILE TIMELINE OVERRIDES START === */
+            .timeline-description {
+                display: none; 
+            }
+            #mobile-timeline-description {
+                color: var(--text-color);
+                width: 90%;
+                max-width: 320px;
+                text-align: center;
+                font-size: 1rem;
+                margin-top: 2rem;
+                opacity: 0;
+                transform: translateY(1rem);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                min-height: 50px;
+                pointer-events: none;
+            }
+            #mobile-timeline-description.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+             /* === MOBILE TIMELINE OVERRIDES END === */
         }
     </style>
 </head>
@@ -263,7 +333,7 @@
         </section>
         
         <!-- === MODIFIED SECTION START === -->
-        <section class="section" id="section-2" data-index="1" data-name="البيان">
+        <section class="section" id="section-2" data-index="1" data-name="البيانات">
             <div class="w-full max-w-4xl mx-auto relative z-10 px-6 md:px-10">
                 <h2 class="font-rajdhani text-2xl sm:text-3xl md:text-[42px] font-bold mb-8 tracking-wider leading-tight">Logical Xenon Dynamics</h2>
                 <p class="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mb-3">
@@ -272,6 +342,47 @@
                 <p class="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
                     أخذ فكرة تدور في ذهنك ونحولها إلى واقع — ومجانًا.
                 </p>
+
+                <!-- Timeline Graphic -->
+                <div class="timeline-container w-full max-w-2xl mx-auto mt-16 md:mt-20">
+                    <div class="flex items-start">
+                        <!-- Item 1: Launch -->
+                        <div class="timeline-item flex-1 flex flex-col items-center cursor-pointer relative">
+                            <div class="timeline-dot w-5 h-5 rounded-full border-2 border-indigo-400 bg-black z-10"></div>
+                            <p class="mt-2 text-sm sm:text-base text-center text-gray-300">الإطلاق</p>
+                            <div class="timeline-description">
+                                نبدأ بفهم فكرتك وتحليلها لوضع خطة عمل واضحة.
+                            </div>
+                        </div>
+                
+                        <!-- Connector -->
+                        <div class="flex-auto border-t-2 border-gray-700 mt-2.5"></div>
+                
+                        <!-- Item 2: Build -->
+                        <div class="timeline-item flex-1 flex flex-col items-center cursor-pointer relative">
+                            <div class="timeline-dot w-5 h-5 rounded-full border-2 border-indigo-400 bg-black z-10"></div>
+                            <p class="mt-2 text-sm sm:text-base text-center text-gray-300">البناء</p>
+                             <div class="timeline-description">
+                                فريقنا يبدأ بتصميم وتطوير المشروع بأحدث التقنيات.
+                            </div>
+                        </div>
+                
+                        <!-- Connector -->
+                        <div class="flex-auto border-t-2 border-gray-700 mt-2.5"></div>
+                
+                        <!-- Item 3: Explore -->
+                        <div class="timeline-item flex-1 flex flex-col items-center cursor-pointer relative">
+                           <div class="timeline-dot w-5 h-5 rounded-full border-2 border-indigo-400 bg-black z-10"></div>
+                            <p class="mt-2 text-sm sm:text-base text-center text-gray-300">الاستطلاع</p>
+                             <div class="timeline-description">
+                                نسلمك المشروع ونستكشف معًا طرق تطويره مستقبلًا.
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Mobile Description Container -->
+                    <div id="mobile-timeline-description"></div>
+                </div>
+
             </div>
         </section>
         <!-- === MODIFIED SECTION END === -->
@@ -283,7 +394,7 @@
                     <div class="feature-card glass-ui rounded-lg p-6 flex flex-row items-center md:flex-col md:text-center">
                         <div class="flex-shrink-0 ml-4 md:ml-0 md:mb-4">
                             <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                             </svg>
                         </div>
                         <div class="text-right md:text-center">
@@ -320,7 +431,7 @@
             </div>
         </section>
         
-        <section class="section" id="section-4" data-index="3" data-name="تواصل">
+        <section class="section" id="section-4" data-index="3" data-name="التواصل">
             <div class="max-w-4xl mx-auto relative z-10 px-6">
                 <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center">تواصل معنا</h2>
                 <p class="text-lg text-gray-300 mb-10 text-center max-w-2xl mx-auto">نحن في انتظارك.</p>
@@ -432,7 +543,8 @@
             geometry.computeVertexNormals();
             
             const colors = [];
-            const defaultColor = new THREE.Color(0x333333);
+            // === MODIFIED: Made the background brighter ===
+            const defaultColor = new THREE.Color(0x666666);
             for (let i = 0; i < geometry.attributes.position.count; i++) {
                 colors.push(defaultColor.r, defaultColor.g, defaultColor.b);
             }
@@ -447,6 +559,7 @@
             
             terrain = new THREE.Mesh(geometry, material);
             terrain.rotation.x = -Math.PI / 2.3;
+            terrain.position.y = -5; // Lower the terrain
             scene.add(terrain);
             
             scene.add(new THREE.AmbientLight(0xffffff, 0.1));
@@ -480,21 +593,24 @@
 
         function onDocumentTouchStart(event) {
             if (event.touches.length === 1) {
-                event.preventDefault();
-                mouseX = event.touches[0].pageX - windowHalfX;
-                mouseY = event.touches[0].pageY - windowHalfY;
-                mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
-                mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
+                if (!event.target.closest('.timeline-container')) {
+                    mouseX = event.touches[0].pageX - windowHalfX;
+                    mouseY = event.touches[0].pageY - windowHalfY;
+                    mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+                    mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
+                }
             }
         }
 
         function onDocumentTouchMove(event) {
             if (event.touches.length === 1) {
-                event.preventDefault();
-                mouseX = event.touches[0].pageX - windowHalfX;
-                mouseY = event.touches[0].pageY - windowHalfY;
-                mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
-                mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
+                 if (!event.target.closest('.timeline-container')) {
+                    event.preventDefault();
+                    mouseX = event.touches[0].pageX - windowHalfX;
+                    mouseY = event.touches[0].pageY - windowHalfY;
+                    mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+                    mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
+                 }
             }
         }
         
@@ -527,7 +643,7 @@
                 const face = intersects[0].face;
                 if (lastIntersectedFace !== face) {
                     if (lastIntersectedFace) {
-                        const defaultColor = new THREE.Color(0x333333);
+                        const defaultColor = new THREE.Color(0x666666);
                         colorAttribute.setXYZ(lastIntersectedFace.a, defaultColor.r, defaultColor.g, defaultColor.b);
                         colorAttribute.setXYZ(lastIntersectedFace.b, defaultColor.r, defaultColor.g, defaultColor.b);
                         colorAttribute.setXYZ(lastIntersectedFace.c, defaultColor.r, defaultColor.g, defaultColor.b);
@@ -540,7 +656,7 @@
                     lastIntersectedFace = face;
                 }
             } else if (lastIntersectedFace) {
-                const defaultColor = new THREE.Color(0x333333);
+                const defaultColor = new THREE.Color(0x666666);
                 colorAttribute.setXYZ(lastIntersectedFace.a, defaultColor.r, defaultColor.g, defaultColor.b);
                 colorAttribute.setXYZ(lastIntersectedFace.b, defaultColor.r, defaultColor.g, defaultColor.b);
                 colorAttribute.setXYZ(lastIntersectedFace.c, defaultColor.r, defaultColor.g, defaultColor.b);
@@ -637,6 +753,28 @@
             }, 800);
         }
         
+        let touchStartY_main = 0;
+        
+        function handleTouchStart(event) {
+            if (event.target.closest('.timeline-container')) return;
+            touchStartY_main = event.touches[0].clientY;
+        }
+
+        function handleTouchEnd(event) {
+            if (event.target.closest('.timeline-container')) return;
+            if (isAnimating) return;
+            let touchEndY = event.changedTouches[0].clientY;
+            let nextIndex = currentSectionIndex;
+            if (touchStartY_main - touchEndY > 50) {
+                nextIndex++;
+            } else if (touchEndY - touchStartY_main > 50) {
+                nextIndex--;
+            }
+            if (nextIndex !== currentSectionIndex && nextIndex >= 0 && nextIndex < sections.length) {
+                goToSection(nextIndex);
+            }
+        }
+
         window.addEventListener('wheel', (event) => {
             const now = Date.now();
             if (now - lastScrollTime < scrollCooldown) return;
@@ -650,21 +788,8 @@
             }
         }, { passive: true });
         
-        let touchStartY = 0;
-        window.addEventListener('touchstart', (event) => { touchStartY = event.touches[0].clientY; });
-        window.addEventListener('touchend', (event) => {
-            if (isAnimating) return;
-            let touchEndY = event.changedTouches[0].clientY;
-            let nextIndex = currentSectionIndex;
-            if (touchStartY - touchEndY > 50) {
-                nextIndex++;
-            } else if (touchEndY - touchStartY > 50) {
-                nextIndex--;
-            }
-            if (nextIndex !== currentSectionIndex && nextIndex >= 0 && nextIndex < sections.length) {
-                goToSection(nextIndex);
-            }
-        });
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('touchend', handleTouchEnd, { passive: true });
         
         window.addEventListener('keydown', (event) => {
             if (isAnimating) return;
@@ -681,10 +806,73 @@
             }
         });
         
+        // Timeline animation logic
+        function initTimelineInteraction() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineContainer = document.querySelector('.timeline-container');
+            const mobileDesc = document.getElementById('mobile-timeline-description');
+            const isTouchDevice = 'ontouchstart' in window;
+            const section2 = document.getElementById('section-2');
+
+            timelineItems.forEach(item => {
+                if (isTouchDevice) {
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent click from bubbling up to section2
+                        const wasActive = item.classList.contains('is-active');
+                        const descText = item.querySelector('.timeline-description').textContent;
+
+                        // If another item was active, create fade out/in effect
+                        if (timelineContainer.classList.contains('is-active') && !wasActive) {
+                            mobileDesc.classList.remove('is-visible');
+                            setTimeout(() => {
+                                mobileDesc.textContent = descText;
+                                mobileDesc.classList.add('is-visible');
+                            }, 150);
+                        } else {
+                            mobileDesc.textContent = descText;
+                        }
+                        
+                        timelineItems.forEach(i => i.classList.remove('is-active'));
+                        
+                        if (!wasActive) {
+                            item.classList.add('is-active');
+                            timelineContainer.classList.add('is-active');
+                            mobileDesc.classList.add('is-visible');
+                        } else {
+                            timelineContainer.classList.remove('is-active');
+                            mobileDesc.classList.remove('is-visible');
+                        }
+                    });
+                } else {
+                    // Desktop Hover Logic
+                    item.addEventListener('mouseenter', () => {
+                        timelineItems.forEach(i => i.classList.remove('is-active'));
+                        item.classList.add('is-active');
+                        timelineContainer.classList.add('is-active');
+                    });
+                }
+            });
+
+            if (isTouchDevice) {
+                section2.addEventListener('click', () => {
+                    timelineItems.forEach(i => i.classList.remove('is-active'));
+                    timelineContainer.classList.remove('is-active');
+                    mobileDesc.classList.remove('is-visible');
+                });
+            } else {
+                timelineContainer.addEventListener('mouseleave', () => {
+                    timelineItems.forEach(item => item.classList.remove('is-active'));
+                    timelineContainer.classList.remove('is-active');
+                });
+            }
+        }
+
+
         init();
         animate();
         createNavItems();
         updateNav();
+        initTimelineInteraction();
     </script>
 </body>
 </html>
