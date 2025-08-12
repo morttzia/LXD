@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LXD - نموذج جديد</title>
+    <title>LXD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --background-color: #000000;
@@ -216,6 +216,10 @@
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
         }
+        /* New font class for English text */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
 
         @media (max-width: 767px) {
             .nav-label {
@@ -225,11 +229,19 @@
                 right: 0.5rem;
             }
             .nav-item {
-                 padding-right: 0.5rem;
-                 width: auto;
+                padding-right: 0.5rem;
+                width: auto;
             }
             .footer {
                 padding: 0.5rem;
+                font-size: 0.75rem; /* Smaller font for footer on mobile */
+            }
+            #section-2 h2 {
+                font-size: 1.7rem; /* Smaller title on mobile to fit one line */
+            }
+            #section-2 p {
+                font-size: 0.9rem; /* Smaller Arabic text on mobile */
+                line-height: 1.6; /* Adjust line height for readability */
             }
         }
     </style>
@@ -246,21 +258,23 @@
         <section class="section active" id="section-1" data-index="0" data-name="الرئيسية">
             <div class="relative z-10">
                 <h1 class="glitch-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider mb-4" data-text="LXD">LXD</h1>
-                <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">حيث تتحول الأفكار إلى واقع رقمي</p>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">حيث تتحول الأفكار إلى واقع رقمي</p>
             </div>
         </section>
         
+        <!-- === MODIFIED SECTION START === -->
         <section class="section" id="section-2" data-index="1" data-name="البيان">
-            <div class="max-w-4xl mx-auto relative z-10 px-6 md:px-10">
-                <h2 class="text-xl sm:text-3xl md:text-4xl font-bold mb-6">حيث تتحول الأفكار إلى واقع رقمي.</h2>
-                <p class="text-sm sm:text-base md:text-2xl text-gray-300 leading-relaxed mb-2">
+            <div class="w-full max-w-4xl mx-auto relative z-10 px-6 md:px-10">
+                <h2 class="font-rajdhani text-2xl sm:text-3xl md:text-[42px] font-bold mb-8 tracking-wider leading-tight">Logical Xenon Dynamics</h2>
+                <p class="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mb-3">
                     شركة متخصصة في تطوير التقنيات المفيدة، مهمتنا هي
                 </p>
-                <p class="text-sm sm:text-base md:text-2xl text-gray-300 leading-relaxed">
+                <p class="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
                     أخذ فكرة تدور في ذهنك ونحولها إلى واقع — ومجانًا.
                 </p>
             </div>
         </section>
+        <!-- === MODIFIED SECTION END === -->
         
         <section class="section" id="section-3" data-index="2" data-name="الميزات">
            <div class="max-w-6xl w-full mx-auto relative z-10 px-4 sm:px-6">
