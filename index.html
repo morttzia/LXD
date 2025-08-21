@@ -220,7 +220,6 @@
             font-family: 'Rajdhani', sans-serif;
         }
 
-        /* === TIMELINE STYLES START === */
         .timeline-item {
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
@@ -249,7 +248,7 @@
         }
         .timeline-container.is-active .timeline-item:not(.is-active) {
             transform: scale(0.9);
-            opacity: 0.7; /* Increased opacity */
+            opacity: 0.7; 
         }
         
         @media (hover: hover) {
@@ -263,10 +262,9 @@
             }
             .timeline-container:hover .timeline-item:not(:hover) {
                 transform: scale(0.9);
-                opacity: 0.7; /* Increased opacity */
+                opacity: 0.7;
             }
         }
-        /* === TIMELINE STYLES END === */
 
         @media (max-width: 767px) {
             .nav-label {
@@ -291,7 +289,6 @@
                 line-height: 1.6;
             }
             
-            /* === MOBILE TIMELINE OVERRIDES START === */
             .timeline-description {
                 display: none; 
             }
@@ -312,7 +309,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-             /* === MOBILE TIMELINE OVERRIDES END === */
         }
     </style>
 </head>
@@ -332,7 +328,6 @@
             </div>
         </section>
         
-        <!-- === MODIFIED SECTION START === -->
         <section class="section" id="section-2" data-index="1" data-name="البيانات">
             <div class="w-full max-w-4xl mx-auto relative z-10 px-6 md:px-10">
                 <h2 class="font-rajdhani text-2xl sm:text-3xl md:text-[42px] font-bold mb-8 tracking-wider leading-tight">Logical Xenon Dynamics</h2>
@@ -343,10 +338,8 @@
                     أخذ فكرة تدور في ذهنك ونحولها إلى واقع — ومجانًا.
                 </p>
 
-                <!-- Timeline Graphic -->
                 <div class="timeline-container w-full max-w-2xl mx-auto mt-16 md:mt-20">
                     <div class="flex items-start">
-                        <!-- Item 1: Launch -->
                         <div class="timeline-item flex-1 flex flex-col items-center cursor-pointer relative">
                             <div class="timeline-dot w-5 h-5 rounded-full border-2 border-indigo-400 bg-black z-10"></div>
                             <p class="mt-2 text-sm sm:text-base text-center text-gray-300">الإطلاق</p>
@@ -355,10 +348,8 @@
                             </div>
                         </div>
                 
-                        <!-- Connector -->
                         <div class="flex-auto border-t-2 border-gray-700 mt-2.5"></div>
                 
-                        <!-- Item 2: Build -->
                         <div class="timeline-item flex-1 flex flex-col items-center cursor-pointer relative">
                             <div class="timeline-dot w-5 h-5 rounded-full border-2 border-indigo-400 bg-black z-10"></div>
                             <p class="mt-2 text-sm sm:text-base text-center text-gray-300">البناء</p>
@@ -367,10 +358,9 @@
                             </div>
                         </div>
                 
-                        <!-- Connector -->
                         <div class="flex-auto border-t-2 border-gray-700 mt-2.5"></div>
                 
-                        <!-- Item 3: Explore -->
+
                         <div class="timeline-item flex-1 flex flex-col items-center cursor-pointer relative">
                            <div class="timeline-dot w-5 h-5 rounded-full border-2 border-indigo-400 bg-black z-10"></div>
                             <p class="mt-2 text-sm sm:text-base text-center text-gray-300">الاستطلاع</p>
@@ -379,13 +369,11 @@
                             </div>
                         </div>
                     </div>
-                     <!-- Mobile Description Container -->
                     <div id="mobile-timeline-description"></div>
                 </div>
 
             </div>
         </section>
-        <!-- === MODIFIED SECTION END === -->
         
         <section class="section" id="section-3" data-index="2" data-name="الميزات">
            <div class="max-w-6xl w-full mx-auto relative z-10 px-4 sm:px-6">
@@ -543,7 +531,6 @@
             geometry.computeVertexNormals();
             
             const colors = [];
-            // === MODIFIED: Made the background brighter ===
             const defaultColor = new THREE.Color(0x666666);
             for (let i = 0; i < geometry.attributes.position.count; i++) {
                 colors.push(defaultColor.r, defaultColor.g, defaultColor.b);
@@ -559,7 +546,7 @@
             
             terrain = new THREE.Mesh(geometry, material);
             terrain.rotation.x = -Math.PI / 2.3;
-            terrain.position.y = -5; // Lower the terrain
+            terrain.position.y = -5;
             scene.add(terrain);
             
             scene.add(new THREE.AmbientLight(0xffffff, 0.1));
@@ -806,7 +793,6 @@
             }
         });
         
-        // Timeline animation logic
         function initTimelineInteraction() {
             const timelineItems = document.querySelectorAll('.timeline-item');
             const timelineContainer = document.querySelector('.timeline-container');
@@ -817,11 +803,10 @@
             timelineItems.forEach(item => {
                 if (isTouchDevice) {
                     item.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Prevent click from bubbling up to section2
+                        e.stopPropagation(); 
                         const wasActive = item.classList.contains('is-active');
                         const descText = item.querySelector('.timeline-description').textContent;
 
-                        // If another item was active, create fade out/in effect
                         if (timelineContainer.classList.contains('is-active') && !wasActive) {
                             mobileDesc.classList.remove('is-visible');
                             setTimeout(() => {
@@ -844,7 +829,6 @@
                         }
                     });
                 } else {
-                    // Desktop Hover Logic
                     item.addEventListener('mouseenter', () => {
                         timelineItems.forEach(i => i.classList.remove('is-active'));
                         item.classList.add('is-active');
@@ -876,3 +860,4 @@
     </script>
 </body>
 </html>
+
