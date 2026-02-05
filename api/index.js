@@ -1,26 +1,36 @@
 import admin from 'firebase-admin';
 
 /**
- * وظيفة تهيئة Firebase Admin بشكل احترافي
- * تقوم بإصلاح كافة عيوب التنسيق الشائعة في Vercel تلقائياً
+ * وظيفة تهيئة Firebase مع نظام تنظيف متطور للـ JSON
  */
 function getFirestoreDB() {
   if (admin.apps.length > 0) return admin.firestore();
 
-  const rawJson = process.env.FIREBASE_SERVICE_ACCOUNT;
+  let rawJson = process.env.FIREBASE_SERVICE_ACCOUNT;
   
   if (!rawJson) {
-    console.error('FIREBASE_SERVICE_ACCOUNT is undefined in Environment Variables');
+    console.error('DEBUG: FIREBASE_SERVICE_ACCOUNT is missing');
     return null;
   }
 
   try {
-    // 1. تنظيف النص من أي رموز غريبة أو مسافات في البداية والنهاية
+    // تنظيف أولي
     let cleanJson = rawJson.trim();
+
+    // طباعة أول 50 حرف للتشخيص في Vercel Logs (سيساعدنا هذا جداً)
+    console.log("DEBUG: Raw JSON starts with:", cleanJson.substring(0, 50));
+
+    // 1. معالجة الاقتباسات الزائدة في البداية والنهاية
+    if (cleanJson.startsWith("'") || cleanJson.startsWith('"')) {
+      cleanJson = cleanJson.substring(1, cleanJson.length - 1);
+    }
+
+    // 2. محاولة البحث عن بداية الـ JSON الحقيقية {
+    const startIdx = cleanJson.indexOf('{');
+    const endIdx = cleanJson.lastIndexOf('}');
     
-    // 2. فحص ما إذا كان النص مغلفاً بعلامات اقتباس زائدة (تحدث عند اللصق في Vercel)
-    if (cleanJson.startsWith('"') && cleanJson.endsWith('"')) {
-      cleanJson = cleanJson.slice(1, -1);
+    if (startIdx !== -1 && endIdx !== -1) {
+      cleanJson = cleanJson.substring(startIdx, endIdx + 1);
     }
 
     // 3. تحليل الـ JSON
@@ -28,22 +38,15 @@ function getFirestoreDB() {
     try {
       config = JSON.parse(cleanJson);
     } catch (e) {
-      // محاولة أخيرة في حال كان الـ JSON يحتوي على هروب مزدوج للرموز
-      cleanJson = cleanJson.replace(/\\"/g, '"');
+      // محاولة أخيرة: إصلاح الهروب المزدوج للشرطات المائلة
+      cleanJson = cleanJson.replace(/\\\\n/g, '\\n');
       config = JSON.parse(cleanJson);
     }
     
-    // 4. إصلاح حاسم للمفتاح الخاص (Private Key)
-    // Vercel أحياناً يحول \n إلى \\n مما يفسد التوقيع الرقمي لفايربيس
+    // 4. إصلاح المفتاح الخاص (السر الحقيقي للعمل)
     if (config.private_key) {
-      config.private_key = config.private_key
-        .replace(/\\n/g, '\n')
-        .replace(/\n/g, '\n'); // التأكد من وجود أسطر حقيقية
-    }
-
-    // 5. التحقق من وجود الحقول الأساسية قبل البدء لعدم الانهيار
-    if (!config.project_id || !config.private_key || !config.client_email) {
-      throw new Error('JSON structure is valid but missing core Firebase fields');
+      // استبدال أسطر الهروب بأسطر حقيقية
+      config.private_key = config.private_key.replace(/\\n/g, '\n');
     }
 
     admin.initializeApp({
@@ -58,12 +61,11 @@ function getFirestoreDB() {
 }
 
 export default async function handler(req, res) {
-  // --- إعدادات CORS الشاملة ---
+  // --- إعدادات CORS ---
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // التعامل مع طلب التحقق المسبق
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const db = getFirestoreDB();
@@ -77,14 +79,13 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, error: 'يرجى استخدام POST' });
+    return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   }
 
-  // إذا فشلت التهيئة، نرسل رداً مفصلاً للمتصفح
   if (!db) {
     return res.status(500).json({ 
       success: false, 
-      error: 'Firebase Initialization Failed. Check Vercel Logs for FIREBASE_INIT_CRITICAL_ERROR.' 
+      error: 'Firebase Initialization Failed. Check Vercel Logs for DEBUG info.' 
     });
   }
 
@@ -94,7 +95,7 @@ export default async function handler(req, res) {
 
     if (!userKey) return res.status(401).json({ success: false, error: 'API Key Missing' });
 
-    // 6. استعلام قاعدة البيانات (البحث عن المفتاح)
+    // استعلام قاعدة البيانات
     const snapshot = await db.collection('api_keys').where('key', '==', userKey).limit(1).get();
 
     if (snapshot.empty) {
@@ -102,12 +103,11 @@ export default async function handler(req, res) {
     }
 
     const keyDoc = snapshot.docs[0];
-    const keyData = keyDoc.data();
     const { prompt } = req.body;
 
     if (!prompt) return res.status(400).json({ success: false, error: 'Prompt required' });
 
-    // 7. استدعاء الذكاء الاصطناعي (gpt-oss-120b)
+    // استدعاء الذكاء الاصطناعي
     const aiRes = await fetch('https://lxd.morttzia-me-3600.workers.dev/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -118,17 +118,12 @@ export default async function handler(req, res) {
       })
     });
 
-    if (!aiRes.ok) throw new Error(`AI Provider returned status ${aiRes.status}`);
-
     const data = await aiRes.json();
 
-    // 8. تحديث عداد الاستخدام
-    await keyDoc.ref.update({ calls: (keyData.calls || 0) + 1 });
+    // تحديث عداد الاستخدام
+    await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
 
-    return res.status(200).json({ 
-      success: true, 
-      result: data.result || data 
-    });
+    return res.status(200).json({ success: true, result: data.result || data });
 
   } catch (error) {
     console.error('API_HANDLER_ERROR:', error.message);
