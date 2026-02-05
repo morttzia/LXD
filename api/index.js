@@ -1,9 +1,13 @@
 import admin from 'firebase-admin';
 
+/**
+ * تهيئة Firebase Admin بنظام التنظيف الشامل
+ */
 function getFirestoreDB() {
   if (admin.apps.length > 0) return admin.firestore();
   const rawData = process.env.FIREBASE_SERVICE_ACCOUNT;
   if (!rawData) return null;
+
   try {
     let cleanJson = rawData.trim();
     const start = cleanJson.indexOf('{');
@@ -17,6 +21,7 @@ function getFirestoreDB() {
 }
 
 export default async function handler(req, res) {
+  // إعدادات CORS الشاملة للسماح بالوصول من المتصفح والـ CLI
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -24,63 +29,110 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const db = getFirestoreDB();
-  if (req.method === 'GET') return res.status(200).json({ status: 'active' });
-  
-  if (!db) return res.status(500).json({ success: false, error: 'System initializing...' });
+  if (!db) return res.status(500).json({ error: 'Database Connection Failed' });
 
   try {
     const authHeader = req.headers['authorization'];
     const userKey = authHeader ? authHeader.replace('Bearer ', '') : null;
-    
+    if (!userKey) return res.status(401).json({ error: 'API Key Missing' });
+
     const snapshot = await db.collection('api_keys').where('key', '==', userKey).limit(1).get();
-    if (snapshot.empty) return res.status(403).json({ success: false, error: 'Access Denied: Invalid Token' });
+    if (snapshot.empty) return res.status(403).json({ error: 'Invalid API Key' });
 
     const keyDoc = snapshot.docs[0];
-    const { prompt } = req.body; // لم نعد نطلب 'model' من الفرونت إند
-    if (!prompt) return res.status(400).json({ success: false, error: 'Payload missing' });
+    const { prompt, messages, stream, effort } = req.body;
 
-    // --- إخفاء الهوية بالكامل هنا ---
-    // نحن نحدد الموديل والرابط هنا في السيرفر، المستخدم لا يرى شيئاً
+    // دعم كلا الصيغتين: OpenAI (messages) و LXD (prompt)
+    let finalInput = prompt;
+    if (messages && Array.isArray(messages)) {
+      finalInput = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+    }
+
+    if (!finalInput) return res.status(400).json({ error: 'No prompt provided' });
+
     const workerUrl = 'https://lxd.morttzia-me-3600.workers.dev';
-    
+
+    // --- حالة البث (Streaming Mode) ---
+    if (stream === true) {
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      const aiRes = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          model: "@cf/openai/gpt-oss-120b",
+          input: finalInput,
+          stream: true, // طلب البث من الوركر
+          reasoning: { effort: effort || "medium" }
+        })
+      });
+
+      if (!aiRes.ok) throw new Error('AI Stream Error');
+
+      const reader = aiRes.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value);
+        
+        // تحويل النص الخام إلى تنسيق OpenAI SSE ليقرأه الـ CLI
+        const sseData = {
+          id: 'chatcmpl-' + Date.now(),
+          object: 'chat.completion.chunk',
+          created: Math.floor(Date.now() / 1000),
+          model: 'gpt-oss-120b',
+          choices: [{ delta: { content: chunk }, index: 0, finish_reason: null }]
+        };
+        
+        res.write(`data: ${JSON.stringify(sseData)}\n\n`);
+      }
+
+      res.write('data: [DONE]\n\n');
+      await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
+      return res.end();
+    }
+
+    // --- الحالة العادية (Non-Streaming) ---
     const aiRes = await fetch(workerUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
-        model: "@cf/openai/gpt-oss-120b", // الموديل ثابت هنا ولا يراه المستخدم
-        input: prompt,
-        effort: "medium"
+        model: "@cf/openai/gpt-oss-120b",
+        input: finalInput,
+        reasoning: { effort: effort || "medium" }
       })
     });
 
     const aiData = await aiRes.json();
+    let textResult = "";
 
-    // فحص النجاح وإخفاء أخطاء كلاود فلير التقنية
-    if (!aiRes.ok) {
-      return res.status(502).json({ 
-        success: false, 
-        error: 'LXD Engine: Resource currently unavailable' // رسالة عامة لإخفاء التفاصيل
-      });
-    }
-
-    let finalResult = '';
+    // استخراج النص حسب هيكلية رد الموديل
     if (aiData.output && Array.isArray(aiData.output)) {
       const msg = aiData.output.find(o => o.type === 'message');
-      if (msg && msg.content && msg.content[0]) finalResult = msg.content[0].text;
-    }
-    if (!finalResult) {
-      finalResult = aiData.result?.response || aiData.response || aiData.result || "No data.";
+      textResult = msg?.content?.[0]?.text || "";
+    } else {
+      textResult = aiData.result?.response || aiData.response || aiData.result || "";
     }
 
     await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
 
-    return res.status(200).json({ 
-      success: true, 
-      result: finalResult 
-    });
+    // رد متوافق مع صيغة OpenAI
+    if (messages) {
+      return res.status(200).json({
+        id: 'chatcmpl-' + Date.now(),
+        choices: [{ message: { role: 'assistant', content: textResult }, finish_reason: 'stop' }]
+      });
+    }
+
+    return res.status(200).json({ success: true, result: textResult });
 
   } catch (error) {
-    // في حال حدوث أي خطأ برمج، نعرض رسالة مشفرة
-    return res.status(500).json({ success: false, error: 'LXD Node Error: Request could not be processed' });
+    console.error("API Global Error:", error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
