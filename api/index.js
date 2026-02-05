@@ -6,7 +6,6 @@ function getFirestoreDB() {
   if (!rawData) return null;
   try {
     let cleanJson = rawData.trim();
-    if (cleanJson.startsWith('"') && cleanJson.endsWith('"')) cleanJson = cleanJson.slice(1, -1);
     const start = cleanJson.indexOf('{');
     const end = cleanJson.lastIndexOf('}');
     if (start !== -1 && end !== -1) cleanJson = cleanJson.substring(start, end + 1);
@@ -18,77 +17,70 @@ function getFirestoreDB() {
 }
 
 export default async function handler(req, res) {
-  // إعدادات الـ Headers لضمان البث الفوري ومنع التخزين المؤقت
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache, no-transform');
-  res.setHeader('Connection', 'keep-alive');
-  res.setHeader('X-Accel-Buffering', 'no'); // تعطيل التخزين المؤقت في Vercel
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  // إرسال نبضة فورية (Heartbeat) لمنع انقطاع الاتصال في أول 3 ثوانٍ
-  res.write(': keep-alive\n\n'); 
-
   const db = getFirestoreDB();
-  if (!db) {
-    res.write(`data: ${JSON.stringify({ error: 'Database Error' })}\n\n`);
-    return res.end();
-  }
+  if (req.method === 'GET') return res.status(200).json({ status: 'active' });
+  
+  if (!db) return res.status(500).json({ success: false, error: 'System initializing...' });
 
   try {
     const authHeader = req.headers['authorization'];
     const userKey = authHeader ? authHeader.replace('Bearer ', '') : null;
-    const snapshot = await db.collection('api_keys').where('key', '==', userKey).limit(1).get();
     
-    if (snapshot.empty) {
-      res.write(`data: ${JSON.stringify({ error: 'Invalid API Key' })}\n\n`);
-      return res.end();
-    }
+    const snapshot = await db.collection('api_keys').where('key', '==', userKey).limit(1).get();
+    if (snapshot.empty) return res.status(403).json({ success: false, error: 'Access Denied: Invalid Token' });
 
-    const { prompt, messages, stream, effort } = req.body;
-    let finalInput = prompt || (messages && messages.map(m => m.content).join('\n'));
+    const keyDoc = snapshot.docs[0];
+    const { prompt } = req.body; // لم نعد نطلب 'model' من الفرونت إند
+    if (!prompt) return res.status(400).json({ success: false, error: 'Payload missing' });
 
+    // --- إخفاء الهوية بالكامل هنا ---
+    // نحن نحدد الموديل والرابط هنا في السيرفر، المستخدم لا يرى شيئاً
     const workerUrl = 'https://lxd.morttzia-me-3600.workers.dev';
-
-    // طلب البث من Cloudflare
+    
     const aiRes = await fetch(workerUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
-        model: "@cf/openai/gpt-oss-120b",
-        input: finalInput,
-        stream: true,
-        reasoning: { effort: effort || "medium" }
+        model: "@cf/openai/gpt-oss-120b", // الموديل ثابت هنا ولا يراه المستخدم
+        input: prompt,
+        effort: "medium"
       })
     });
 
-    if (!aiRes.ok) throw new Error('AI Engine Timeout');
+    const aiData = await aiRes.json();
 
-    const reader = aiRes.body.getReader();
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      
-      const chunk = decoder.decode(value, { stream: true });
-      // تحويل الرد إلى صيغة OpenAI SSE
-      const sseData = {
-        choices: [{ delta: { content: chunk }, index: 0 }]
-      };
-      res.write(`data: ${JSON.stringify(sseData)}\n\n`);
+    // فحص النجاح وإخفاء أخطاء كلاود فلير التقنية
+    if (!aiRes.ok) {
+      return res.status(502).json({ 
+        success: false, 
+        error: 'LXD Engine: Resource currently unavailable' // رسالة عامة لإخفاء التفاصيل
+      });
     }
 
-    res.write('data: [DONE]\n\n');
-    const keyDoc = snapshot.docs[0];
+    let finalResult = '';
+    if (aiData.output && Array.isArray(aiData.output)) {
+      const msg = aiData.output.find(o => o.type === 'message');
+      if (msg && msg.content && msg.content[0]) finalResult = msg.content[0].text;
+    }
+    if (!finalResult) {
+      finalResult = aiData.result?.response || aiData.response || aiData.result || "No data.";
+    }
+
     await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
 
+    return res.status(200).json({ 
+      success: true, 
+      result: finalResult 
+    });
+
   } catch (error) {
-    res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
-  } finally {
-    res.end();
+    // في حال حدوث أي خطأ برمج، نعرض رسالة مشفرة
+    return res.status(500).json({ success: false, error: 'LXD Node Error: Request could not be processed' });
   }
 }
