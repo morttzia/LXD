@@ -1,29 +1,28 @@
 import admin from 'firebase-admin';
 
 /**
- * دالة تهيئة Firebase Admin بنظام التنظيف الذكي
- * تقوم باستخراج الـ JSON الصافي وإصلاح رموز السطر الجديد تلقائياً
+ * دالة تهيئة Firebase Admin مع نظام تنظيف وحماية شامل
+ * تعالج مشاكل الـ JSON والرموز الزائدة تلقائياً
  */
 function getFirestoreDB() {
   if (admin.apps.length > 0) return admin.firestore();
 
   const rawData = process.env.FIREBASE_SERVICE_ACCOUNT;
-  
   if (!rawData) {
-    console.error('الخطأ: المتغير FIREBASE_SERVICE_ACCOUNT غير موجود في إعدادات Vercel');
+    console.error('FIREBASE_SERVICE_ACCOUNT is missing');
     return null;
   }
 
   try {
     let cleanJson = rawData.trim();
     
-    // إزالة أي علامات اقتباس خارجية قد تضاف عند اللصق في Vercel
+    // تنظيف الاقتباسات الخارجية الزائدة
     while ((cleanJson.startsWith('"') && cleanJson.endsWith('"')) || 
            (cleanJson.startsWith("'") && cleanJson.endsWith("'"))) {
       cleanJson = cleanJson.slice(1, -1).trim();
     }
 
-    // استخراج محتوى الـ JSON الحقيقي بين أول { وآخر } لتجنب أي نصوص زائدة
+    // استخراج محتوى الـ JSON الحقيقي
     const start = cleanJson.indexOf('{');
     const end = cleanJson.lastIndexOf('}');
     if (start !== -1 && end !== -1) {
@@ -32,7 +31,7 @@ function getFirestoreDB() {
 
     const config = JSON.parse(cleanJson);
     
-    // إصلاح مشكلة رموز السطر الجديد في المفتاح الخاص ليعمل التشفير بشكل سليم
+    // إصلاح المفتاح الخاص (استبدال الهروب بأسطر حقيقية)
     if (config.private_key) {
       config.private_key = config.private_key.replace(/\\n/g, '\n');
     }
@@ -43,83 +42,69 @@ function getFirestoreDB() {
     
     return admin.firestore();
   } catch (err) {
-    console.error('خطأ في تهيئة Firebase:', err.message);
+    console.error('FIREBASE_INIT_ERROR:', err.message);
     return null;
   }
 }
 
 export default async function handler(req, res) {
-  // --- إعدادات CORS للسماح بالوصول من المتصفح ---
+  // --- إعدادات CORS الشاملة ---
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // معالجة طلبات التحقق المسبق (Preflight)
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const db = getFirestoreDB();
 
-  // فحص الحالة عبر طلب GET
+  // فحص الحالة عبر GET
   if (req.method === 'GET') {
     return res.status(200).json({ 
       status: 'online', 
-      database: db ? 'ready' : 'failed_to_initialize' 
+      database: db ? 'ready' : 'initialization_error' 
     });
   }
 
-  // السماح بطلبات POST فقط لمعالجة الأسئلة
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, error: 'يرجى استخدام POST' });
-  }
-
-  if (!db) {
-    return res.status(500).json({ 
-      success: false, 
-      error: 'فشل السيرفر في الاتصال بقاعدة البيانات. تأكد من إعدادات المفتاح في Vercel.' 
-    });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
+  if (!db) return res.status(500).json({ success: false, error: 'Firebase Connection Failed' });
 
   try {
-    // 1. التحقق من الهوية (Bearer Token)
     const authHeader = req.headers['authorization'];
     const userKey = authHeader ? authHeader.replace('Bearer ', '') : null;
+    if (!userKey) return res.status(401).json({ success: false, error: 'API Key Missing' });
 
-    if (!userKey) return res.status(401).json({ success: false, error: 'مفتاح الـ API مفقود' });
-
-    // 2. البحث عن المفتاح في قاعدة البيانات
+    // البحث عن المفتاح في Firestore
     const snapshot = await db.collection('api_keys').where('key', '==', userKey).limit(1).get();
-
-    if (snapshot.empty) {
-      return res.status(403).json({ success: false, error: 'المفتاح المستخدم غير صالح' });
-    }
+    if (snapshot.empty) return res.status(403).json({ success: false, error: 'Invalid API Key' });
 
     const keyDoc = snapshot.docs[0];
-    const keyData = keyDoc.data();
     const { prompt } = req.body;
+    if (!prompt) return res.status(400).json({ success: false, error: 'Prompt Missing' });
 
-    if (!prompt) return res.status(400).json({ success: false, error: 'نص السؤال مطلوب' });
-
-    // 3. استدعاء الموديل gpt-oss-120b من Cloudflare
-    // تأكد من أن الرابط هو رابط الوركر الخاص بك بدون شرطة مائلة في النهاية
+    // --- الرابط الصحيح والمؤكد من قبلك ---
     const workerUrl = 'https://lxd.morttzia-me-3600.workers.dev';
     
+    // استدعاء الموديل gpt-oss-120b بالهيكلية المطلوبة (input + reasoning)
     const aiRes = await fetch(workerUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         model: "@cf/openai/gpt-oss-120b",
         input: prompt,
-        reasoning: { effort: "high" } // تفعيل جهد التفكير العالي للموديل
+        reasoning: { effort: "high" }
       })
     });
 
     const aiData = await aiRes.json();
 
     if (!aiRes.ok || aiData.errors) {
-      throw new Error(aiData.errors?.[0]?.message || 'فشل استدعاء الذكاء الاصطناعي من Cloudflare');
+      return res.status(502).json({ 
+        success: false, 
+        error: "AI Worker Error: " + (aiData.errors?.[0]?.message || "Check Worker Deployment")
+      });
     }
 
-    // 4. استخراج نص الرد الصافي
+    // استخراج الرد النصي من هيكلية الـ 120b
     let finalResult = '';
     if (aiData.result && aiData.result.response) {
       finalResult = aiData.result.response;
@@ -127,18 +112,12 @@ export default async function handler(req, res) {
       finalResult = typeof aiData.result === 'string' ? aiData.result : JSON.stringify(aiData.result || aiData);
     }
 
-    // 5. تحديث عداد الاستخدام في قاعدة البيانات
-    await keyDoc.ref.update({
-      calls: (keyData.calls || 0) + 1
-    });
+    // تحديث عداد الطلبات
+    await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
 
-    return res.status(200).json({ 
-      success: true, 
-      result: finalResult 
-    });
+    return res.status(200).json({ success: true, result: finalResult });
 
   } catch (error) {
-    console.error('API Error:', error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
 }
