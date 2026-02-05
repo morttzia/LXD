@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LXD | API Key Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0d0d0d; --card: #1a1a1a; --text: #eee; --accent: #ffffff; }
+        body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: var(--card); padding: 30px; border-radius: 20px; width: min(90%, 400px); border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        h1 { font-size: 1.5rem; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #252525; border: 1px solid #333; color: #fff; border-radius: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-primary { background: #fff; color: #000; }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #ccc; }
+        .btn-danger { background: rgba(255,85,85,0.1); color: #ff5555; border: 1px solid #ff5555; }
+        .key-display { background: #000; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 0.9rem; margin: 20px 0; word-break: break-all; border: 1px dashed #444; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="auth-ui">
+    <h1>تسجيل الدخول للنظام</h1>
+    <input type="email" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button class="btn-primary" onclick="handleAuth('login')">دخول</button>
+    <button class="btn-secondary" onclick="handleAuth('signup')">إنشاء حساب جديد</button>
+</div>
+
+<div class="container hidden" id="dashboard-ui">
+    <h1>لوحة تحكم المفاتيح</h1>
+    <p style="font-size: 0.8rem; color: #888;">مفتاحك الخاص لاستخدام نموذج gpt-oss-120b</p>
+    
+    <div class="key-display" id="key-text">لا يوجد مفتاح حالياً</div>
+    
+    <button class="btn-primary" id="gen-btn" onclick="manageKey('generate')">توليد مفتاح جديد</button>
+    <button class="btn-secondary" id="copy-btn" onclick="copyKey()">نسخ المفتاح</button>
+    <button class="btn-danger" id="del-btn" onclick="manageKey('delete')">حذف المفتاح</button>
+    
+    <button class="btn-secondary" style="margin-top: 30px; opacity: 0.5;" onclick="signOut()">تسجيل الخروج</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // إعدادات فايربيس الخاصة بك (من ملفك ai.html)
+    const firebaseConfig = {
+        apiKey: "AIzaSyAcYVpRogd4yNKnN-_2uMIftcw3KpWYAZI",
+        authDomain: "minivision-lxd.firebaseapp.com",
+        projectId: "minivision-lxd",
+        storageBucket: "minivision-lxd.firebasestorage.app",
+        messagingSenderId: "587275838193",
+        appId: "1:587275838193:web:5220dc6362241f0ef83f50"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // التحقق من حالة الدخول
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('auth-ui').classList.add('hidden');
+            document.getElementById('dashboard-ui').classList.remove('hidden');
+            listenToKey(user.uid);
+        } else {
+            document.getElementById('auth-ui').classList.remove('hidden');
+            document.getElementById('dashboard-ui').classList.add('hidden');
+        }
+    });
+
+    // مراقبة المفتاح من Firestore
+    function listenToKey(uid) {
+        onSnapshot(doc(db, "users", uid), (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                document.getElementById('key-text').innerText = data.apiKey || "لا يوجد مفتاح نشط";
+            }
+        });
+    }
+
+    // إدارة العمليات (دخول / إنشاء حساب)
+    window.handleAuth = async (type) => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        try {
+            if (type === 'login') await signInWithEmailAndPassword(auth, email, pass);
+            else {
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", res.user.uid), { email, apiKey: "" });
+            }
+        } catch (e) { alert("خطأ: " + e.message); }
+    };
+
+    // توليد أو حذف المفتاح
+    window.manageKey = async (action) => {
+        const user = auth.currentUser;
+        const userRef = doc(db, "users", user.uid);
+        const newKey = action === 'generate' ? 'sk_lxd_' + Math.random().toString(36).substr(2, 15) : "";
+        
+        try {
+            await updateDoc(userRef, { apiKey: newKey });
+            if(action === 'generate') alert("تم توليد المفتاح!");
+        } catch (e) { alert("حدث خطأ"); }
+    };
+
+    window.copyKey = () => {
+        const text = document.getElementById('key-text').innerText;
+        if (text.includes("لا يوجد")) return;
+        navigator.clipboard.writeText(text);
+        alert("تم النسخ!");
+    };
+
+    window.signOut = () => firebaseSignOut(auth);
+</script>
+</body>
+</html>
