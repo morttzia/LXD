@@ -20,12 +20,12 @@ function getFirestoreDB() {
     admin.initializeApp({ credential: admin.credential.cert(config) });
     return admin.firestore();
   } catch (err) {
-    console.error('FIREBASE_INIT_ERROR:', err.message);
     return null;
   }
 }
 
 export default async function handler(req, res) {
+  // رؤوس CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -33,9 +33,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const db = getFirestoreDB();
-  if (req.method === 'GET') return res.status(200).json({ status: 'online', db: db ? 'ready' : 'error' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'online' });
   
-  if (!db) return res.status(500).json({ success: false, error: 'Firebase Connection Failed' });
+  if (!db) return res.status(500).json({ success: false, error: 'Database Error' });
 
   try {
     const authHeader = req.headers['authorization'];
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
     const { prompt } = req.body;
     if (!prompt) return res.status(400).json({ success: false, error: 'Prompt Missing' });
 
+    // --- الرابط مخفي هنا في السيرفر ولا يراه المستخدم أبداً ---
     const workerUrl = 'https://lxd.morttzia-me-3600.workers.dev';
     
     const aiRes = await fetch(workerUrl, {
@@ -56,37 +57,40 @@ export default async function handler(req, res) {
       body: JSON.stringify({ 
         model: "@cf/openai/gpt-oss-120b",
         input: prompt,
-        effort: "high"
+        effort: "medium"
       })
     });
 
     const aiData = await aiRes.json();
 
-    if (!aiRes.ok) {
-      return res.status(aiRes.status).json({ success: false, error: aiData.error || 'AI Provider Error' });
-    }
+    if (!aiRes.ok) return res.status(502).json({ success: false, error: 'AI Provider Offline' });
 
-    // --- نظام استخراج النص الذكي لموديل gpt-oss-120b ---
-    let finalResult = '';
+    // --- استخراج النص الصافي فقط (إخفاء @cf وكل البيانات التقنية) ---
+    let finalCleanText = '';
     
-    // البحث داخل مصفوفة output عن الرسالة النهائية (type: message)
+    // محاولة الاستخراج من هيكلية 120b المعقدة
     if (aiData.output && Array.isArray(aiData.output)) {
-      const messageContent = aiData.output.find(o => o.type === 'message');
-      if (messageContent && messageContent.content && messageContent.content[0]) {
-        finalResult = messageContent.content[0].text;
+      const msg = aiData.output.find(o => o.type === 'message');
+      if (msg && msg.content && msg.content[0]) {
+        finalCleanText = msg.content[0].text;
       }
     }
 
-    // إذا لم نجد النص بالطريقة السابقة، نجرب الطرق التقليدية
-    if (!finalResult) {
-      finalResult = aiData.response || aiData.result?.response || (typeof aiData === 'string' ? aiData : JSON.stringify(aiData));
+    // fallback في حال كانت الهيكلية بسيطة
+    if (!finalCleanText) {
+      finalCleanText = aiData.result?.response || aiData.response || aiData.result || "عذراً، لم أستطع معالجة الرد.";
     }
 
+    // تحديث العداد
     await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
 
-    return res.status(200).json({ success: true, result: finalResult });
+    // نرسل النتيجة الصافية فقط للمستخدم
+    return res.status(200).json({ 
+      success: true, 
+      result: finalCleanText 
+    });
 
   } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
+    return res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 }
