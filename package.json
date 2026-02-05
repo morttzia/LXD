@@ -1,0 +1,11 @@
+{
+  "name": "lxd-api",
+  "version": "1.0.0",
+  "main": "api/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.11.1"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}
