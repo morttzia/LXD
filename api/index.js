@@ -1,5 +1,8 @@
 import admin from 'firebase-admin';
 
+/**
+ * تهيئة Firebase Admin بنظام التنظيف الشامل
+ */
 function getFirestoreDB() {
   if (admin.apps.length > 0) return admin.firestore();
   const rawData = process.env.FIREBASE_SERVICE_ACCOUNT;
@@ -45,30 +48,39 @@ export default async function handler(req, res) {
     const { prompt } = req.body;
     if (!prompt) return res.status(400).json({ success: false, error: 'Prompt Missing' });
 
-    // --- الرابط الصحيح (بدون أي مسارات فرعية) ---
     const workerUrl = 'https://lxd.morttzia-me-3600.workers.dev';
     
-    // إرسال الطلب للوركر
     const aiRes = await fetch(workerUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         model: "@cf/openai/gpt-oss-120b",
         input: prompt,
-        effort: "medium"
+        effort: "high"
       })
     });
 
     const aiData = await aiRes.json();
 
     if (!aiRes.ok) {
-      return res.status(aiRes.status).json({ 
-        success: false, 
-        error: `Cloudflare Worker Error: ${JSON.stringify(aiData)}` 
-      });
+      return res.status(aiRes.status).json({ success: false, error: aiData.error || 'AI Provider Error' });
     }
 
-    const finalResult = aiData.response || aiData.result?.response || aiData.result || JSON.stringify(aiData);
+    // --- نظام استخراج النص الذكي لموديل gpt-oss-120b ---
+    let finalResult = '';
+    
+    // البحث داخل مصفوفة output عن الرسالة النهائية (type: message)
+    if (aiData.output && Array.isArray(aiData.output)) {
+      const messageContent = aiData.output.find(o => o.type === 'message');
+      if (messageContent && messageContent.content && messageContent.content[0]) {
+        finalResult = messageContent.content[0].text;
+      }
+    }
+
+    // إذا لم نجد النص بالطريقة السابقة، نجرب الطرق التقليدية
+    if (!finalResult) {
+      finalResult = aiData.response || aiData.result?.response || (typeof aiData === 'string' ? aiData : JSON.stringify(aiData));
+    }
 
     await keyDoc.ref.update({ calls: (keyDoc.data().calls || 0) + 1 });
 
