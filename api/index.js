@@ -1,48 +1,45 @@
 import admin from 'firebase-admin';
 
 /**
- * تهيئة Firebase Admin بنظام التنظيف الشامل
- * يعالج مشكلة الاقتباسات المزدوجة والمفردة والرموز المخفية
+ * دالة تهيئة Firebase بنظام "التنظيف العميق"
+ * تعالج مشاكل الـ JSON التالف والرموز المهربة بشكل خاطئ
  */
 function getFirestoreDB() {
   if (admin.apps.length > 0) return admin.firestore();
 
-  const rawData = process.env.FIREBASE_SERVICE_ACCOUNT;
+  let rawData = process.env.FIREBASE_SERVICE_ACCOUNT;
   
   if (!rawData) {
-    console.error('DEBUG: FIREBASE_SERVICE_ACCOUNT is missing');
+    console.error('DEBUG: FIREBASE_SERVICE_ACCOUNT missing');
     return null;
   }
 
   try {
+    // 1. تنظيف أولي للفراغات والاقتباسات الزائدة
     let cleanJson = rawData.trim();
-    
-    // طباعة أول 30 حرف لمراقبة Logs في Vercel
-    console.log("DEBUG: Processing string starting with:", cleanJson.substring(0, 30));
-
-    // 1. إزالة أي علامات اقتباس خارجية (مزدوجة أو مفردة) قد تكون أُضيفت بالخطأ
-    // نكرر العملية للتأكد من إزالة كافة الطبقات
-    while ((cleanJson.startsWith('"') && cleanJson.endsWith('"')) || 
-           (cleanJson.startsWith("'") && cleanJson.endsWith("'"))) {
-      cleanJson = cleanJson.slice(1, -1).trim();
+    if (cleanJson.startsWith('"') && cleanJson.endsWith('"')) {
+      cleanJson = cleanJson.slice(1, -1);
     }
 
-    // 2. محاولة استخراج محتوى الـ JSON إذا كان محاطاً بنصوص
-    const startChar = cleanJson.indexOf('{');
-    const endChar = cleanJson.lastIndexOf('}');
-    if (startChar !== -1 && endChar !== -1) {
-      cleanJson = cleanJson.substring(startChar, endChar + 1);
-    }
+    // 2. إصلاح الأسطر الحقيقية (التي تسبب خطأ Bad escaped character)
+    // نقوم بتحويل أي "Enter" حقيقي داخل النص إلى رمز \n
+    cleanJson = cleanJson.replace(/\n/g, '\\n');
 
-    // 3. تحليل الـ JSON النهائي
-    const config = JSON.parse(cleanJson);
+    // 3. محاولة تحليل الـ JSON
+    let config;
+    try {
+      config = JSON.parse(cleanJson);
+    } catch (parseError) {
+      // إذا فشل، نحاول تنظيف الرموز المهربة بشكل مزدوج
+      cleanJson = cleanJson.replace(/\\\\n/g, '\\n');
+      config = JSON.parse(cleanJson);
+    }
     
-    // 4. إصلاح المفتاح الخاص (استبدال الهروب بأسطر حقيقية)
+    // 4. التأكد من أن المفتاح الخاص يحتوي على أسطر حقيقية للـ SDK
     if (config.private_key) {
       config.private_key = config.private_key.replace(/\\n/g, '\n');
     }
 
-    // 5. التشغيل
     admin.initializeApp({
       credential: admin.credential.cert(config)
     });
@@ -64,11 +61,11 @@ export default async function handler(req, res) {
 
   const db = getFirestoreDB();
 
-  // فحص الحالة
+  // فحص الحالة عبر GET
   if (req.method === 'GET') {
     return res.status(200).json({ 
       status: 'online', 
-      database: db ? 'ready' : 'failed_initialization' 
+      database: db ? 'ready' : 'error_initializing' 
     });
   }
 
@@ -77,7 +74,7 @@ export default async function handler(req, res) {
   if (!db) {
     return res.status(500).json({ 
       success: false, 
-      error: 'Firebase Init Failed. تأكد من لصق الكود الصافي في Vercel بدون اقتباسات.' 
+      error: 'Firebase Init Failed. يرجى مراجعة إعدادات Vercel.' 
     });
   }
 
@@ -96,7 +93,7 @@ export default async function handler(req, res) {
 
     if (!prompt) return res.status(400).json({ success: false, error: 'Prompt Missing' });
 
-    // استدعاء AI
+    // استدعاء الذكاء الاصطناعي
     const aiRes = await fetch('https://lxd.morttzia-me-3600.workers.dev/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
