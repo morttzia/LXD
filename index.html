@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>LXD Co. — Ai & Software</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif']}}}};</script>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&display=swap" rel="stylesheet" />
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Alexandria','sans-serif']}}}};</script>
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="anim.css" />
 <link rel="stylesheet" href="layout.css" />
@@ -19,40 +20,105 @@
   <div id="nav-shell" class="mx-auto w-full">
     <div class="px-5">
       
-      <nav id="desktop-nav" class="relative hidden h-16 items-center lg:flex w-full">
+      <nav id="desktop-nav" class="relative hidden h-16 items-center lg:flex w-full" dir="ltr">
         <div id="nav-left-zone" class="flex items-center justify-start whitespace-nowrap">
           <a href="#" class="text-lg tracking-tighter text-white shrink-0 truncate"><span class="font-bold">LXD Co.</span><span class="dynamic-logo transition-opacity duration-300 font-normal opacity-80 whitespace-pre"></span></a>
         </div>
         <div class="flex items-center justify-center shrink-0">
           <div class="flex items-center gap-2">
-            <a href="#" class="nav-pill-btn inline-flex h-9 items-center justify-center rounded-full px-4 text-sm font-semibold text-white/90 transition-colors hover:text-white">Home</a>
             
-            <div class="nav-item">
-              <button class="nav-pill-btn dd-trigger inline-flex h-9 items-center gap-1 rounded-full px-4 text-sm font-semibold text-white/90 transition-colors hover:text-white" data-target="products-menu">Products<svg class="h-3.5 w-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                        <div class="nav-item">
+              <button onclick="openPricingModal()" class="nav-pill-btn inline-flex h-9 items-center justify-center rounded-full px-4 text-sm font-semibold text-white/90 transition-colors hover:text-white">الأسعار</button>
             </div>
-            
             <div class="nav-item">
-              <button class="nav-pill-btn dd-trigger inline-flex h-9 items-center gap-1 rounded-full px-4 text-sm font-semibold text-white/90 transition-colors hover:text-white" data-target="models-menu">Models<svg class="h-3.5 w-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+              <button class="nav-pill-btn dd-trigger inline-flex flex-row-reverse h-9 items-center gap-1 rounded-full px-4 text-sm font-semibold text-white/90 transition-colors hover:text-white" data-target="models-menu">النماذج<svg class="h-3.5 w-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            </div>
+            <div class="nav-item">
+              <button class="nav-pill-btn dd-trigger inline-flex flex-row-reverse h-9 items-center gap-1 rounded-full px-4 text-sm font-semibold text-white/90 transition-colors hover:text-white" data-target="products-menu">المنتجات<svg class="h-3.5 w-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
             </div>
             
             <div id="shared-dropdown" class="nav-dropdown-shared">
+
+              <div id="pricing-menu" class="dropdown-panel w-[90vw] sm:w-[500px] md:w-[650px] p-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-6">
+                  
+                  <div class="flex flex-col gap-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <svg class="h-5 w-5 text-white/50" viewBox="0 0 100 100" fill="none"><path d="M20 30L80 20L80 40L20 50Z" fill="currentColor"/><path d="M20 55L80 45L80 65L20 75Z" fill="currentColor" opacity="0.6"/><path d="M20 80L80 70L80 85L20 95Z" fill="currentColor" opacity="0.3"/></svg>
+                      <h4 class="text-[13px] font-semibold tracking-wider uppercase text-white/80">LXD API</h4>
+                    </div>
+                    <a href="https://api.lxds.org/subscription" target="_blank" class="block rounded-xl border border-white/5 bg-white/5 p-3 transition-all hover:bg-white/10 hover:border-white/10">
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-semibold text-white/90">الخطة المجانية</span>
+                        <span class="text-xs font-bold text-white">$0 <span class="text-[10px] text-white/40 font-normal">/ يوم</span></span>
+                      </div>
+                      <div class="text-[10px] text-white/40 leading-relaxed">100 Xen مجاناً، جميع النماذج، 3 مفاتيح</div>
+                    </a>
+                    <a href="https://api.lxds.org/subscription" target="_blank" class="block relative overflow-hidden rounded-xl border border-white/10 bg-white/10 p-3 transition-all hover:bg-white/15 hover:border-white/20">
+                      <span class="absolute top-0 right-0 bg-white text-black text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">موصى به</span>
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-semibold text-white">المطور</span>
+                        <span class="text-xs font-bold text-white">$10 <span class="text-[10px] text-white/60 font-normal">/ شهر</span></span>
+                      </div>
+                      <div class="text-[10px] text-white/60 leading-relaxed">2,000 Xen يومياً، 10 مفاتيح، جميع النماذج</div>
+                    </a>
+                    <a href="https://api.lxds.org/subscription" target="_blank" class="block rounded-xl border border-white/5 bg-transparent p-3 transition-all hover:bg-white/5 hover:border-white/10">
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-semibold text-white/70">المؤسسات</span>
+                        <span class="text-xs font-bold text-white/80">دفع مباشر</span>
+                      </div>
+                      <div class="text-[10px] text-white/40 leading-relaxed">استخدام غير محدود، دعم مباشر</div>
+                    </a>
+                  </div>
+
+                  <div class="flex flex-col gap-3">
+                    <div class="flex items-center gap-2 mb-1">
+                      <svg class="h-5 w-5 text-white/50" viewBox="363 280 296 210" fill="currentColor"><path d="M590.756653,338.301758 C612.027344,379.291870 633.100952,419.964508 654.226624,460.610138 C658.856323,469.517578 658.628418,477.416138 653.342896,482.821625 C649.989746,486.250885 645.948669,487.430298 641.149597,487.420410 C597.658142,487.330780 554.166382,487.397583 510.674713,487.398438 C468.849426,487.399261 427.017517,486.954010 385.202606,487.605743 C371.614777,487.817535 363.564301,474.881195 369.853607,462.883148 C394.601013,415.673004 419.101471,368.333405 443.704071,321.047302 C446.492554,315.687805 451.049194,312.930023 456.993408,312.751587 C463.391418,312.559448 468.287598,315.415131 471.269318,321.091034 C479.325317,336.426361 487.273315,351.818451 495.264191,367.187988 C508.556610,392.754486 521.854126,418.318390 535.132385,443.892242 C536.230591,446.007355 537.226074,448.046417 540.151428,448.014862 C550.795532,447.899933 561.475281,448.378693 572.075806,447.661957 C583.906006,446.862183 593.952759,436.062836 594.687256,424.612244 C595.556030,411.068237 587.352905,399.465546 574.934937,396.439087 C570.434570,395.342285 566.020325,395.359528 561.652405,396.739044 C559.038025,397.564667 557.707336,396.953125 556.897705,394.207550 C549.110107,367.799713 534.373169,357.030396 506.780975,357.432800 C506.144989,357.442108 505.507507,357.347229 504.901031,357.303131 C504.067200,355.043304 505.574036,353.625702 506.362122,352.096802 C516.588989,332.255981 526.898865,312.457947 537.135132,292.621918 C540.362671,286.367554 544.873108,282.512939 552.409180,282.595184 C559.792053,282.675751 563.948181,286.716156 567.061157,292.756409 C574.844238,307.858002 582.732361,322.905426 590.756653,338.301758z"/></svg>
+                      <h4 class="text-[13px] font-semibold tracking-wider uppercase text-white/80">LXD Host</h4>
+                    </div>
+                    <a href="https://host.lxds.org/dashboard/pricing" target="_blank" class="block rounded-xl border border-white/5 bg-white/5 p-3 transition-all hover:bg-white/10 hover:border-white/10">
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-semibold text-white/90">الخطة المجانية</span>
+                        <span class="text-xs font-bold text-white">$0 <span class="text-[10px] text-white/40 font-normal">/ شهر</span></span>
+                      </div>
+                      <div class="text-[10px] text-white/40 leading-relaxed">25 ميغابايت، 3 مواقع، شهادة SSL</div>
+                    </a>
+                    <a href="https://host.lxds.org/dashboard/pricing" target="_blank" class="block relative overflow-hidden rounded-xl border border-white/10 bg-white/10 p-3 transition-all hover:bg-white/15 hover:border-white/20">
+                      <span class="absolute top-0 right-0 bg-white text-black text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">الأفضل</span>
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-semibold text-white">الخطة المدفوعة</span>
+                        <span class="text-xs font-bold text-white">$2 <span class="text-[10px] text-white/60 font-normal">/ شهر</span></span>
+                      </div>
+                      <div class="text-[10px] text-white/60 leading-relaxed">10 غيغابايت، 100 موقع، ذكاء متقدم</div>
+                    </a>
+                    <a href="https://host.lxds.org/dashboard/pricing" target="_blank" class="block rounded-xl border border-white/5 bg-transparent p-3 transition-all hover:bg-white/5 hover:border-white/10">
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-semibold text-white/70">مخصصة</span>
+                        <span class="text-xs font-bold text-white/80">تواصل معنا</span>
+                      </div>
+                      <div class="text-[10px] text-white/40 leading-relaxed">مساحة وخدمات مخصصة</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
               <div id="products-menu" class="dropdown-panel w-[340px] p-2">
-                <a href="https://api.lxds.org" target="_blank"><div class="dd-icon"><svg class="h-5 w-5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 30L80 20L80 40L20 50Z" fill="currentColor"/><path d="M20 55L80 45L80 65L20 75Z" fill="currentColor" opacity="0.6"/><path d="M20 80L80 70L80 85L20 95Z" fill="currentColor" opacity="0.3"/></svg></div><div><div class="dd-title">LXD Co. API Service</div><div class="dd-desc">Unified gateway for all AI models — with events & team system built in.</div></div></a>
-                <a href="https://host.lxds.org" target="_blank"><div class="dd-icon"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="363 280 296 210" fill="currentColor"><path d="M590.756653,338.301758 C612.027344,379.291870 633.100952,419.964508 654.226624,460.610138 C658.856323,469.517578 658.628418,477.416138 653.342896,482.821625 C649.989746,486.250885 645.948669,487.430298 641.149597,487.420410 C597.658142,487.330780 554.166382,487.397583 510.674713,487.398438 C468.849426,487.399261 427.017517,486.954010 385.202606,487.605743 C371.614777,487.817535 363.564301,474.881195 369.853607,462.883148 C394.601013,415.673004 419.101471,368.333405 443.704071,321.047302 C446.492554,315.687805 451.049194,312.930023 456.993408,312.751587 C463.391418,312.559448 468.287598,315.415131 471.269318,321.091034 C479.325317,336.426361 487.273315,351.818451 495.264191,367.187988 C508.556610,392.754486 521.854126,418.318390 535.132385,443.892242 C536.230591,446.007355 537.226074,448.046417 540.151428,448.014862 C550.795532,447.899933 561.475281,448.378693 572.075806,447.661957 C583.906006,446.862183 593.952759,436.062836 594.687256,424.612244 C595.556030,411.068237 587.352905,399.465546 574.934937,396.439087 C570.434570,395.342285 566.020325,395.359528 561.652405,396.739044 C559.038025,397.564667 557.707336,396.953125 556.897705,394.207550 C549.110107,367.799713 534.373169,357.030396 506.780975,357.432800 C506.144989,357.442108 505.507507,357.347229 504.901031,357.303131 C504.067200,355.043304 505.574036,353.625702 506.362122,352.096802 C516.588989,332.255981 526.898865,312.457947 537.135132,292.621918 C540.362671,286.367554 544.873108,282.512939 552.409180,282.595184 C559.792053,282.675751 563.948181,286.716156 567.061157,292.756409 C574.844238,307.858002 582.732361,322.905426 590.756653,338.301758z"/></svg></div><div><div class="dd-title">LXD Co. Host Service</div><div class="dd-desc">Host websites, Telegram bots, AI models & Docker containers.</div></div></a>
-                <a href="https://kaaf.lxds.org" target="_blank"><div class="dd-icon"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none"><path class="draw-nib" pathLength="100" d="M 256 200 L 256 420 L 320 280 C 370 200 320 100 320 100 L 192 100 C 192 100 142 200 192 280 L 256 420" stroke="currentColor" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" /><path class="draw-detail" pathLength="100" d="M 256 160 A 20 20 0 1 1 256 200 A 20 20 0 1 1 256 160" stroke="currentColor" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" /><path class="draw-detail" pathLength="100" d="M 210 260 Q 256 280 302 260" stroke="currentColor" stroke-width="20" stroke-linecap="round" /></svg></div><div><div class="dd-title">LXD Co. Kaaf Notebook</div><div class="dd-desc">A notebook, reimagined. Markdown, code blocks, todo lists, and novel sharing.</div></div></a>
+                <a href="https://api.lxds.org" target="_blank"><div class="dd-icon"><svg class="h-5 w-5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 30L80 20L80 40L20 50Z" fill="currentColor"/><path d="M20 55L80 45L80 65L20 75Z" fill="currentColor" opacity="0.6"/><path d="M20 80L80 70L80 85L20 95Z" fill="currentColor" opacity="0.3"/></svg></div><div><div class="dd-title" dir="ltr">LXD Co. API Service</div><div class="dd-desc">بوابة موحدة لجميع النماذج الذكية - مع نظام للأحداث وفرق العمل.</div></div></a>
+                <a href="https://host.lxds.org" target="_blank"><div class="dd-icon"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="363 280 296 210" fill="currentColor"><path d="M590.756653,338.301758 C612.027344,379.291870 633.100952,419.964508 654.226624,460.610138 C658.856323,469.517578 658.628418,477.416138 653.342896,482.821625 C649.989746,486.250885 645.948669,487.430298 641.149597,487.420410 C597.658142,487.330780 554.166382,487.397583 510.674713,487.398438 C468.849426,487.399261 427.017517,486.954010 385.202606,487.605743 C371.614777,487.817535 363.564301,474.881195 369.853607,462.883148 C394.601013,415.673004 419.101471,368.333405 443.704071,321.047302 C446.492554,315.687805 451.049194,312.930023 456.993408,312.751587 C463.391418,312.559448 468.287598,315.415131 471.269318,321.091034 C479.325317,336.426361 487.273315,351.818451 495.264191,367.187988 C508.556610,392.754486 521.854126,418.318390 535.132385,443.892242 C536.230591,446.007355 537.226074,448.046417 540.151428,448.014862 C550.795532,447.899933 561.475281,448.378693 572.075806,447.661957 C583.906006,446.862183 593.952759,436.062836 594.687256,424.612244 C595.556030,411.068237 587.352905,399.465546 574.934937,396.439087 C570.434570,395.342285 566.020325,395.359528 561.652405,396.739044 C559.038025,397.564667 557.707336,396.953125 556.897705,394.207550 C549.110107,367.799713 534.373169,357.030396 506.780975,357.432800 C506.144989,357.442108 505.507507,357.347229 504.901031,357.303131 C504.067200,355.043304 505.574036,353.625702 506.362122,352.096802 C516.588989,332.255981 526.898865,312.457947 537.135132,292.621918 C540.362671,286.367554 544.873108,282.512939 552.409180,282.595184 C559.792053,282.675751 563.948181,286.716156 567.061157,292.756409 C574.844238,307.858002 582.732361,322.905426 590.756653,338.301758z"/></svg></div><div><div class="dd-title" dir="ltr">LXD Co. Host Service</div><div class="dd-desc">استضف المواقع، بوتات التيليجرام، النماذج الذكية، وحاويات دوكر.</div></div></a>
+                <a href="https://kaaf.lxds.org" target="_blank"><div class="dd-icon"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none"><path class="draw-nib" pathLength="100" d="M 256 200 L 256 420 L 320 280 C 370 200 320 100 320 100 L 192 100 C 192 100 142 200 192 280 L 256 420" stroke="currentColor" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" /><path class="draw-detail" pathLength="100" d="M 256 160 A 20 20 0 1 1 256 200 A 20 20 0 1 1 256 160" stroke="currentColor" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" /><path class="draw-detail" pathLength="100" d="M 210 260 Q 256 280 302 260" stroke="currentColor" stroke-width="20" stroke-linecap="round" /></svg></div><div><div class="dd-title" dir="ltr">LXD Co. Kaaf Notebook</div><div class="dd-desc">مذكرة بشكل جديد كلياً. تدعم ماركداون، عرض الأكواد، قوائم المهام، ومشاركة الروايات.</div></div></a>
               </div>
               <div id="models-menu" class="dropdown-panel w-[300px] p-4 sm:w-[520px]">
                 <div class="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
                   <div class="flex flex-col gap-5">
                     <div>
-                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">Text — LLM</div>
+                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">NETRONS — LLM Family</div>
                       <ul class="space-y-1.5">
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">NETRONS Flash</li>
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">NETRONS PRO</li>
                       </ul>
                     </div>
                     <div>
-                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">Image-to-Image</div>
+                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">Emaj — Image-to-Image</div>
                       <ul class="space-y-1.5">
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">Emaj Edit</li>
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">Emaj Edit E2</li>
@@ -67,7 +133,7 @@
                   </div>
                   <div class="flex flex-col gap-5">
                     <div>
-                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">Text-to-Image</div>
+                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">Emaj — Text-to-Image</div>
                       <ul class="space-y-1.5">
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">EmajUltra 2.1</li>
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">EmajUltra 2</li>
@@ -76,7 +142,7 @@
                       </ul>
                     </div>
                     <div>
-                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">3D-Generation</div>
+                      <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">Emaj — 3D-Generation</div>
                       <ul class="space-y-1.5">
                         <li class="text-sm text-white/70 cursor-pointer transition-colors hover:text-white" onclick="window.open('https://api.lxds.org/models', '_blank')">Emaj VR</li>
                       </ul>
@@ -88,11 +154,11 @@
           </div>
         </div>
         <div id="nav-right-zone" class="flex items-center justify-end gap-2">
-          <a href="#products" class="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-white px-5 text-sm font-medium text-black transition-all hover:bg-white/90 hover:shadow-lg hover:shadow-white/10 shrink-0">Get Started</a>
+          <a href="#products" class="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-white px-5 text-sm font-medium text-black transition-all hover:bg-white/90 hover:shadow-lg hover:shadow-white/10 shrink-0">ابدأ الآن</a>
         </div>
       </nav>
 
-      <div class="flex h-16 items-center justify-between lg:hidden">
+      <div class="flex h-16 items-center justify-between lg:hidden" dir="ltr">
         <a href="#" class="text-lg tracking-tighter text-white"><span class="font-bold">LXD Co.</span><span class="dynamic-logo transition-opacity duration-300 font-normal opacity-80 whitespace-pre"></span></a>
         <button onclick="toggleMobile()" class="flex h-9 w-9 items-center justify-center rounded-full text-white"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       </div>
@@ -109,61 +175,71 @@
     <button onclick="toggleMobile()" class="text-white"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
   </div>
   <div class="flex flex-col gap-4 overflow-y-auto p-6 pt-8" style="max-height:calc(100vh - 64px)">
-    <a href="#" onclick="toggleMobile()" class="text-base font-semibold text-white/80">Home</a>
+
+
+            <a href="#" onclick="openPricingModal(); toggleMobile(); return false;" class="text-base font-semibold text-white/80 py-1">الأسعار</a>
+
     <div>
-      <button onclick="toggleAcc('m-acc-products')" class="flex w-full items-center justify-between py-2 text-base font-semibold text-white/80">Products<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-      <div id="m-acc-products" class="mobile-acc-content pl-4">
-        <a href="#products" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">LXD: API</a>
-        <a href="https://host.lxds.org" target="_blank" class="block py-2 text-sm text-white/40 hover:text-white">LXD: Host</a>
+      <button onclick="toggleAcc('m-acc-models')" class="flex w-full items-center justify-between py-2 text-base font-semibold text-white/80">النماذج<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+      <div id="m-acc-models" class="mobile-acc-content pr-4">
+        <a href="https://api.lxds.org/models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">NETRONS Flash</a>
+        <a href="https://api.lxds.org/models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">NETRONS PRO</a>
+        <a href="https://api.lxds.org/models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">Emaj Edit</a>
       </div>
     </div>
+
     <div>
-      <button onclick="toggleAcc('m-acc-models')" class="flex w-full items-center justify-between py-2 text-base font-semibold text-white/80">Models<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-      <div id="m-acc-models" class="mobile-acc-content pl-4">
-        <a href="#models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">NETRONS Flash / PRO</a>
-        <a href="#models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">Emaj — Text-to-Image</a>
-        <a href="#models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">Emaj Edit E2 / VR</a>
-        <a href="#models" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">Saria ForMed</a>
+      <button onclick="toggleAcc('m-acc-products')" class="flex w-full items-center justify-between py-2 text-base font-semibold text-white/80">المنتجات<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+      <div id="m-acc-products" class="mobile-acc-content pr-4">
+        <a href="https://api.lxds.org" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">LXD: API</a>
+        <a href="https://host.lxds.org" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">LXD: Host</a>
+        <a href="https://kaaf.lxds.org" onclick="toggleMobile()" class="block py-2 text-sm text-white/40 hover:text-white">LXD: Kaaf Notebook</a>
       </div>
     </div>
     <div class="mt-4 flex flex-col gap-3">
-      <a href="#products" onclick="toggleMobile()" class="whitespace-nowrap rounded-full bg-white px-4 py-2.5 text-center text-sm font-medium text-black">Get Started</a>
+      <a href="#products" onclick="toggleMobile()" class="whitespace-nowrap rounded-full bg-white px-4 py-2.5 text-center text-sm font-medium text-black">ابدأ الآن</a>
     </div>
   </div>
 </div>
 
 
-<section class="relative flex min-h-[90vh] flex-col justify-end overflow-hidden pb-8 pt-20 lg:pb-12 lg:pt-24">
+<section class="relative flex min-h-[95vh] lg:min-h-screen flex-col justify-end overflow-hidden pb-6 pt-20 lg:pb-10 lg:pt-24">
   <div class="absolute inset-0 pointer-events-none z-0 bg-anim-container">
-    <img src="emajultra.png" alt="Hero Background 1" class="bg-layer bg-layer-1" />
-    <img src="host.png" alt="Hero Background 2" class="bg-layer bg-layer-2" />
-    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent z-10"></div>
+    <picture>
+      <source media="(max-width: 767px)" srcset="emajultramobile.png">
+      <img src="emajultra.png" alt="Hero Background 1" class="bg-layer bg-layer-1" />
+    </picture>
+    <picture>
+      <source media="(max-width: 767px)" srcset="hostmobile.png">
+      <img src="host.png" alt="Hero Background 2" class="bg-layer bg-layer-2" />
+    </picture>
+    <div class="absolute inset-x-0 bottom-0 h-40 lg:h-56 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
   </div>
   <div id="hero-content" class="relative z-10 w-full px-6 md:px-12 lg:px-16 will-change-transform">
       <div class="grid w-full">
         
         
-        <div class="content-layer content-layer-1 col-start-1 row-start-1 flex flex-col items-start gap-4 text-left">
-          <h1 class="text-3xl font-bold leading-[1.06] tracking-tighter text-white md:text-5xl lg:text-6xl [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)]">
-            <span class="block">Build your next project</span>
-            <span class="glow-line block text-white/70">with LXD Co.</span>
+        <div class="content-layer content-layer-1 col-start-1 row-start-1 flex flex-col items-start gap-4 text-right">
+          <h1 class="text-3xl font-bold leading-relaxed tracking-normal text-white md:text-5xl lg:text-6xl [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-4 lg:gap-6">
+            <span class="block">ابنِ مشروعك القادم</span>
+            <span class="glow-line block text-white opacity-70">مع LXD Co.</span>
           </h1>
-          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">APIs, Hosting, AI Models, and Tools — one ecosystem engineered for speed. From 7,000 chars/sec text generation to 0.08s image creation.</p>
+          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">واجهات برمجية، استضافة، نماذج ذكاء اصطناعي، وأدوات — بيئة متكاملة مصممة للسرعة. من توليد نصوص بسرعة 7000 حرف/ثانية إلى إنشاء صور في 0.08 ثانية.</p>
           <div class="mt-3 flex w-full flex-wrap justify-start gap-3">
-            <a href="#products" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">Get Started<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
-            <a href="https://t.me/lxd_iq" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/20 bg-black/60 px-6 text-xs font-semibold text-white transition-all duration-300 hover:gap-3 hover:bg-white/10 sm:text-sm">Learn more<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+            <a href="#products" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">ابدأ الآن<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+            <a href="https://t.me/lxd_iq" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/20 bg-black/60 px-6 text-xs font-semibold text-white transition-all duration-300 hover:gap-3 hover:bg-white/10 sm:text-sm">اكتشف المزيد<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
           </div>
         </div>
 
         
-        <div class="content-layer content-layer-2 col-start-1 row-start-1 flex flex-col items-start gap-4 text-left pointer-events-none">
-          <h1 class="text-3xl font-bold leading-[1.06] tracking-tighter text-white md:text-5xl lg:text-6xl [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)]">
-            <span class="block">Deploy instantly on</span>
-            <span class="glow-line block text-white/70">LXD Host Service.</span>
+        <div class="content-layer content-layer-2 col-start-1 row-start-1 flex flex-col items-start gap-4 text-right pointer-events-none">
+          <h1 class="text-3xl font-bold leading-relaxed tracking-normal text-white md:text-5xl lg:text-6xl [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-4 lg:gap-6">
+            <span class="block">انشر فوراً على</span>
+            <span class="glow-line block text-white opacity-70">LXD Host Service.</span>
           </h1>
-          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">The ultimate hosting infrastructure. Deploy websites, Telegram bots, AI models, and Docker containers with unmatched speed and reliability.</p>
+          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">بنية تحتية جبارة للاستضافة. انشر مواقعك، بوتات التيليجرام، النماذج الذكية، وحاويات دوكر بسرعة وثبات.</p>
           <div class="mt-3 flex w-full flex-wrap justify-start gap-3 pointer-events-auto">
-            <a href="https://host.lxds.org" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">Host Now<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+            <a href="https://host.lxds.org" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">استضف الآن<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
           </div>
         </div>
 
@@ -179,14 +255,14 @@
       <div class="dot dot-tl"></div><div class="dot dot-tr"></div><div class="dot dot-bl"></div><div class="dot dot-br"></div>
       <div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
         <div class="flex flex-col justify-center">
-          <p class="prod-anim mb-4 text-xs font-semibold uppercase text-white/25" style="--d:0ms">Products</p>
-          <h2 class="text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl">
-            <span class="prod-line"><span style="--d:150ms">One ecosystem.</span></span>
-            <span class="prod-line text-white/30"><span style="--d:300ms">Everything you need.</span></span>
+          <p class="prod-anim mb-4 text-xs font-semibold uppercase text-white/25" style="--d:0ms">المنتجات</p>
+          <h2 class="text-4xl font-bold leading-relaxed tracking-normal text-white md:text-5xl flex flex-col gap-4 lg:gap-6">
+            <span class="prod-line block"><span style="--d:150ms">بيئة متكاملة واحدة.</span></span>
+            <span class="prod-line block text-white opacity-30"><span style="--d:300ms">كل ما تحتاجه.</span></span>
           </h2>
-          <p class="body-text prod-anim mt-6 max-w-md text-base leading-relaxed text-white/40" style="--d:450ms">From unified AI APIs to hosting infrastructure, intelligent bots, and a reimagined notebook — LXD Co. gives you the full stack to build, deploy, and scale.</p>
+          <p class="body-text prod-anim mt-6 max-w-md text-base leading-relaxed text-white/40" style="--d:450ms">من الواجهات البرمجية للذكاء الاصطناعي إلى بنية الاستضافة التحتية، والبوتات الذكية، والمذكرة المبتكرة — LXD Co. توفر لك كل شيء لبناء وتوسيع مشروعك.</p>
           <div class="prod-anim mt-8" style="--d:600ms">
-            <a href="https://t.me/lxd_iq" target="_blank" class="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:gap-4 hover:bg-white/5">Get Started<svg class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+            <a href="https://t.me/lxd_iq" target="_blank" class="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:gap-4 hover:bg-white/5">ابدأ الآن<svg class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
           </div>
         </div>
         <div class="flex flex-col justify-center divide-y divide-white/5">
@@ -197,9 +273,9 @@
   <path d="M20 80L80 70L80 85L20 95Z" fill="currentColor" opacity="0.3"/>
 </svg></div>
             <div>
-              <h3 class="text-lg font-semibold text-white">LXD Co. API Service</h3>
-              <p class="body-text mt-1 text-sm leading-relaxed text-white/35">Unified API gateway for AI models with built-in events system and team management.</p>
-              <div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">AI Models API</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Events</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Team System</span></div>
+              <h3 class="text-lg font-semibold text-white" dir="ltr">LXD Co. API Service</h3>
+              <p class="body-text mt-1 text-sm leading-relaxed text-white/35">بوابة واجهة برمجة تطبيقات موحدة لنماذج الذكاء الاصطناعي مع نظام أحداث مدمج وإدارة فرق.</p>
+              <div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">واجهة النماذج</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">نظام الأحداث</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">نظام الفرق</span></div>
             </div>
           </a>
           <a href="https://host.lxds.org" target="_blank" class="prod-row row-hover group flex items-start gap-5 py-6" style="--d:400ms">
@@ -207,9 +283,9 @@
   <path d="M590.756653,338.301758 C612.027344,379.291870 633.100952,419.964508 654.226624,460.610138 C658.856323,469.517578 658.628418,477.416138 653.342896,482.821625 C649.989746,486.250885 645.948669,487.430298 641.149597,487.420410 C597.658142,487.330780 554.166382,487.397583 510.674713,487.398438 C468.849426,487.399261 427.017517,486.954010 385.202606,487.605743 C371.614777,487.817535 363.564301,474.881195 369.853607,462.883148 C394.601013,415.673004 419.101471,368.333405 443.704071,321.047302 C446.492554,315.687805 451.049194,312.930023 456.993408,312.751587 C463.391418,312.559448 468.287598,315.415131 471.269318,321.091034 C479.325317,336.426361 487.273315,351.818451 495.264191,367.187988 C508.556610,392.754486 521.854126,418.318390 535.132385,443.892242 C536.230591,446.007355 537.226074,448.046417 540.151428,448.014862 C550.795532,447.899933 561.475281,448.378693 572.075806,447.661957 C583.906006,446.862183 593.952759,436.062836 594.687256,424.612244 C595.556030,411.068237 587.352905,399.465546 574.934937,396.439087 C570.434570,395.342285 566.020325,395.359528 561.652405,396.739044 C559.038025,397.564667 557.707336,396.953125 556.897705,394.207550 C549.110107,367.799713 534.373169,357.030396 506.780975,357.432800 C506.144989,357.442108 505.507507,357.347229 504.901031,357.303131 C504.067200,355.043304 505.574036,353.625702 506.362122,352.096802 C516.588989,332.255981 526.898865,312.457947 537.135132,292.621918 C540.362671,286.367554 544.873108,282.512939 552.409180,282.595184 C559.792053,282.675751 563.948181,286.716156 567.061157,292.756409 C574.844238,307.858002 582.732361,322.905426 590.756653,338.301758z"/>
 </svg></div>
             <div>
-              <h3 class="text-lg font-semibold text-white">LXD Co. Host Service</h3>
-              <p class="body-text mt-1 text-sm leading-relaxed text-white/35">Deploy websites, Telegram bots, AI models, and Docker containers on fast infrastructure.</p>
-              <div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Websites</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Bots</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Models</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Dockers</span></div>
+              <h3 class="text-lg font-semibold text-white" dir="ltr">LXD Co. Host Service</h3>
+              <p class="body-text mt-1 text-sm leading-relaxed text-white/35">انشر المواقع، بوتات التيليجرام، النماذج الذكية، وحاويات دوكر على بنية تحتية سريعة جداً.</p>
+              <div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">مواقع</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">بوتات</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">نماذج</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">حاويات دوكر</span></div>
             </div>
           </a>
           <a href="https://kaaf.lxds.org" target="_blank" class="prod-row row-hover group flex items-start gap-5 py-6" style="--d:550ms">
@@ -235,9 +311,9 @@
     <path class="draw-detail" pathLength="100" d="M 210 260 Q 256 280 302 260" stroke="currentColor" stroke-width="20" stroke-linecap="round" />
 </svg></div>
             <div>
-              <h3 class="text-lg font-semibold text-white">LXD Co. Kaaf Notebook</h3>
-              <p class="body-text mt-1 text-sm leading-relaxed text-white/35">A notebook, reimagined. Markdown, code blocks, todo lists, novel sharing, and homework — all in one.</p>
-              <div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Markdown</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Todo</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Novels</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">Homework</span></div>
+              <h3 class="text-lg font-semibold text-white" dir="ltr">LXD Co. Kaaf Notebook</h3>
+              <p class="body-text mt-1 text-sm leading-relaxed text-white/35">مذكرة بشكل جديد كلياً. تدعم ماركداون، عرض الأكواد، قوائم المهام، مشاركة الروايات والواجبات — كلها في مكان واحد.</p>
+              <div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">ماركداون</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">مهام</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">روايات</span><span class="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-white/40">واجبات</span></div>
             </div>
           </a>
         </div>
@@ -257,14 +333,14 @@
     <div class="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
       <div class="flex h-full flex-col justify-between lg:col-span-8">
         <div>
-          <h2 class="mb-4 text-3xl font-bold tracking-tight text-white md:text-5xl lg:mb-5">
-            <span class="words-reveal block" data-words>Four bots.</span>
-            <span class="words-reveal block text-white/60" data-words data-word-delay="0.3">Zero limits.</span>
+          <h2 class="mb-4 text-3xl font-bold tracking-tight text-white md:text-5xl lg:mb-5 flex flex-col gap-4 lg:gap-6">
+            <span class="words-reveal block" data-words>أربعة بوتات.</span>
+            <span class="words-reveal block text-white/60" data-words data-word-delay="0.3">بلا حدود.</span>
           </h2>
-          <p class="body-text mb-6 max-w-md text-sm leading-relaxed text-white/40 md:text-base lg:mb-8">A powerful suite of Telegram bots for automation, media downloading, music discovery, and social scripting.</p>
+          <p class="body-text mb-6 max-w-md text-sm leading-relaxed text-white/40 md:text-base lg:mb-8">مجموعة قوية من بوتات التيليجرام للأتمتة، تنزيل الوسائط، استكشاف الموسيقى، والتحكم بالحسابات.</p>
           <div class="flex w-full flex-wrap items-center gap-3">
             <a id="dynamic-doc-btn" href="https://t.me/spyingtelegram_bot" target="_blank" class="group inline-flex h-11 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/5 bg-white/10 px-4 text-[13px] font-medium text-white transition-all duration-300 hover:gap-4 hover:bg-white/20 sm:px-5 sm:text-sm">
-              <span class="relative flex h-5 items-center overflow-hidden"><span id="doc-btn-text" class="inline-block whitespace-nowrap transition-all duration-300">Spying.Telegram</span></span>
+              <span class="relative flex h-5 items-center overflow-hidden"><span id="doc-btn-text" class="inline-block whitespace-nowrap transition-all duration-300">تجربة البوت</span></span>
               <svg class="h-4 w-4 shrink-0 text-white/50 transition-all duration-300 group-hover:rotate-45 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
             </a>
             <a href="https://host.lxds.org" target="_blank" class="group inline-flex h-11 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-4 text-[13px] font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300 hover:gap-4 hover:bg-white/90 sm:px-5 sm:text-sm">LXD Co. Host Service<svg class="h-4 w-4 shrink-0 text-black/60 transition-all duration-300 group-hover:rotate-45 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
@@ -273,10 +349,10 @@
         <div class="relative mt-10 lg:mt-32">
           <div id="bot-content-container" class="fade-transition fade-in relative flex w-fit max-w-full items-center gap-4 lg:gap-5">
             <img id="bot-image" src="https://i.ibb.co/CKrn538N/photo-5402234535660950716-y.jpg" alt="Bot Profile" class="h-12 w-12 shrink-0 rounded-full border border-white/10 object-cover shadow-sm lg:h-14 lg:w-14"/>
-            <div class="min-w-0 flex flex-col justify-center">
-              <h3 id="bot-title" class="text-lg font-bold tracking-tight text-white lg:text-xl leading-none">Spying.Telegram</h3>
+            <div class="min-w-0 flex flex-col justify-center text-right">
+              <h3 id="bot-title" class="text-lg font-bold tracking-tight text-white lg:text-xl leading-tight w-full text-right" dir="rtl"><span dir="ltr">Spying.Telegram</span></h3>
               <div id="bot-description-container" class="flex items-center mt-1.5">
-                <p id="bot-description" class="body-text max-w-xs text-sm leading-snug text-white/40 lg:max-w-md">Script and automate Telegram profiles and posts. Manage content at scale.</p>
+                <p id="bot-description" class="body-text max-w-xs text-sm leading-relaxed text-white/40 lg:max-w-md">أتمتة وإدارة حسابات وقنوات التيليجرام بسهولة فائقة.</p>
               </div>
             </div>
           </div>
@@ -293,54 +369,54 @@
 <section id="models" class="py-32">
   <div class="mx-auto max-w-7xl px-6">
     <div class="mb-12 max-w-2xl lg:mb-20">
-      <p class="label-reveal mb-3 text-xs font-semibold uppercase text-white/25">AI Models</p>
-      <h2 class="text-4xl font-bold tracking-tight text-white md:text-5xl">
-        <span class="words-reveal block" data-words>Models that move</span>
-        <span class="words-reveal block text-white/30" data-words data-word-delay="0.3">at your speed.</span>
+      <p class="label-reveal mb-3 text-xs font-semibold uppercase text-white/25">النماذج الذكية</p>
+      <h2 class="text-4xl font-bold tracking-tight text-white md:text-5xl flex flex-col gap-4 lg:gap-6">
+        <span class="words-reveal block" data-words>نماذج ذكية تتحرك</span>
+        <span class="words-reveal block text-white opacity-30" data-words data-word-delay="0.3">بسرعة تواكب طموحك.</span>
       </h2>
     </div>
 
     
     <div class="hidden lg:block">
-      <div class="flex flex-col gap-12 lg:flex-row lg:gap-16">
+      <div class="flex flex-col gap-12 lg:flex-row-reverse lg:gap-16">
         
         <div class="flex flex-1 flex-col gap-12">
           <div>
-            <div class="mb-6 flex items-center gap-4"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">NETRONS — LLM Family</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
+            <div class="mb-6 flex items-center gap-4" dir="ltr"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">NETRONS — LLM Family</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
             <div class="divide-y divide-white/5">
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">NETRONS Flash</h4><p class="body-text mt-0.5 text-sm text-white/35">Ultra-fast text-to-text for real-time generation.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">7,000 chars/sec</span></div>
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">NETRONS PRO</h4><p class="body-text mt-0.5 text-sm text-white/35">Advanced reasoning with the same extreme speed.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">Not measured</span></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">NETRONS Flash</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">7000 حرف/ثانية</span></div><p class="body-text mt-0.5 text-sm text-white/35">توليد نصوص فائق السرعة للمعالجة الحية.</p></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">NETRONS PRO</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">غير مقاس</span></div><p class="body-text mt-0.5 text-sm text-white/35">قدرات تفكير متقدمة بنفس السرعة الفائقة.</p></div>
             </div>
           </div>
           <div>
-            <div class="mb-6 flex items-center gap-4"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Emaj — Image-to-Image</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
+            <div class="mb-6 flex items-center gap-4" dir="ltr"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Emaj — Image-to-Image</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
             <div class="divide-y divide-white/5">
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">Emaj Edit</h4><p class="body-text mt-0.5 text-sm text-white/35">Precision image-to-image editing.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">Instant</span></div>
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">Emaj Edit E2</h4><p class="body-text mt-0.5 text-sm text-white/35">Second-generation editing with finer control.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">Instant</span></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Edit</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">فوري</span></div><p class="body-text mt-0.5 text-sm text-white/35">تعديل دقيق للصور المبنية على صور.</p></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Edit E2</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">فوري</span></div><p class="body-text mt-0.5 text-sm text-white/35">الجيل الثاني من أدوات التعديل بتحكم أدق.</p></div>
             </div>
           </div>
           <div>
-            <div class="mb-6 flex items-center gap-4"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Saria Series</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
+            <div class="mb-6 flex items-center gap-4" dir="ltr"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Saria Series</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
             <div class="divide-y divide-white/5">
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">Saria ForMed <span class="font-normal text-white/25">— Open Source</span></h4><p class="body-text mt-0.5 text-sm text-white/35">Medical text & image-to-text intelligence. Runs fully offline on a laptop, PC, or mobile — exceptional clinical accuracy.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">Local — laptop, PC, mobile</span></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">Saria ForMed <span class="font-normal text-white/25">— Open Source</span></h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">محلي — لابتوب، كمبيوتر، موبايل</span></div><p class="body-text mt-0.5 text-sm text-white/35">تحليل طبي متقدم للنصوص والصور. يعمل بدون إنترنت على الهاتف والكمبيوتر — بدقة سريرية.</p></div>
             </div>
           </div>
         </div>
         
         <div class="flex flex-1 flex-col gap-12">
           <div>
-            <div class="mb-6 flex items-center gap-4"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Emaj — Text-to-Image</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
+            <div class="mb-6 flex items-center gap-4" dir="ltr"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Emaj — Text-to-Image</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
             <div class="divide-y divide-white/5">
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">EmajUltra 2.1</h4><p class="body-text mt-0.5 text-sm text-white/35">Flagship text-to-image with stunning quality.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">1.6min/image</span></div>
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">EmajUltra 2</h4><p class="body-text mt-0.5 text-sm text-white/35">Proven generation power, still blazing fast.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">3.2min/image</span></div>
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">Emaj VISION</h4><p class="body-text mt-0.5 text-sm text-white/35">Vision-aware generation with contextual understanding.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">0.6s/image</span></div>
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">Emaj Flash</h4><p class="body-text mt-0.5 text-sm text-white/35">Lightning-fast generation for rapid prototyping.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">0.08s/image</span></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">EmajUltra 2.1</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">1.6 دقيقة/صورة</span></div><p class="body-text mt-0.5 text-sm text-white/35">النموذج الأقوى لتوليد الصور بجودة مذهلة.</p></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">EmajUltra 2</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">3.2 دقيقة/صورة</span></div><p class="body-text mt-0.5 text-sm text-white/35">قوة توليد مجربة وبسرعة عالية.</p></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj VISION</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">0.6 ثانية/صورة</span></div><p class="body-text mt-0.5 text-sm text-white/35">توليد صور مع فهم عميق للسياق البصري.</p></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Flash</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">0.08 ثانية/صورة</span></div><p class="body-text mt-0.5 text-sm text-white/35">توليد بسرعة البرق للتجارب السريعة.</p></div>
             </div>
           </div>
           <div>
-            <div class="mb-6 flex items-center gap-4"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Emaj — 3D-Generation</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
+            <div class="mb-6 flex items-center gap-4" dir="ltr"><h3 class="label-reveal text-xs font-semibold uppercase text-white/25">Emaj — Emaj — 3D-Generation</h3><div class="line-reveal h-px flex-1 bg-white/10"></div></div>
             <div class="divide-y divide-white/5">
-              <div class="reveal row-hover flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"><div><h4 class="text-sm font-semibold text-white">Emaj VR</h4><p class="body-text mt-0.5 text-sm text-white/35">Immersive 360° VR images from a single prompt.</p></div><span class="mt-1 whitespace-nowrap text-xs text-white/30 sm:mt-0">360°</span></div>
+              <div class="reveal row-hover flex flex-col gap-1 py-4"><div dir="ltr" class="flex items-center justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj VR</h4><span dir="rtl" class="whitespace-nowrap text-xs text-white/30 text-right">360 درجة</span></div><p class="body-text mt-0.5 text-sm text-white/35">صور واقع افتراضي 360 درجة من وصف نصي واحد.</p></div>
             </div>
           </div>
         </div>
@@ -350,38 +426,38 @@
     
     <div class="reveal mt-10 space-y-3 lg:hidden">
       <div class="overflow-hidden rounded-2xl bg-white/[0.03]">
-        <button onclick="toggleModelAcc('macc-netrons',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"><span class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">NETRONS — LLM Family</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <button onclick="toggleModelAcc('macc-netrons',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-right"><span dir="ltr" class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">NETRONS — LLM Family</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
         <div id="macc-netrons" class="model-acc-content"><div class="acc-inner divide-y divide-white/5 px-5 pb-4">
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">NETRONS Flash</h4><span class="whitespace-nowrap text-[11px] text-white/30">7,000 chars/sec</span></div><p class="body-text text-xs text-white/35">Ultra-fast text-to-text for real-time generation.</p></div>
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">NETRONS PRO</h4><span class="whitespace-nowrap text-[11px] text-white/30">Not measured</span></div><p class="body-text text-xs text-white/35">Advanced reasoning with the same extreme speed.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">NETRONS Flash</h4><span class="whitespace-nowrap text-[11px] text-white/30">7000 حرف/ثانية</span></div><p class="body-text text-xs text-white/35">توليد نصوص فائق السرعة للمعالجة الحية.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">NETRONS PRO</h4><span class="whitespace-nowrap text-[11px] text-white/30">غير مقاس</span></div><p class="body-text text-xs text-white/35">قدرات تفكير متقدمة بنفس السرعة الفائقة.</p></div>
         </div></div>
       </div>
       <div class="overflow-hidden rounded-2xl bg-white/[0.03]">
-        <button onclick="toggleModelAcc('macc-t2i',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"><span class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Emaj — Text-to-Image</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <button onclick="toggleModelAcc('macc-t2i',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-right"><span dir="ltr" class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Emaj — Text-to-Image</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
         <div id="macc-t2i" class="model-acc-content"><div class="acc-inner divide-y divide-white/5 px-5 pb-4">
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">EmajUltra 2.1</h4><span class="whitespace-nowrap text-[11px] text-white/30">1.6min/image</span></div><p class="body-text text-xs text-white/35">Flagship text-to-image with stunning quality.</p></div>
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">EmajUltra 2</h4><span class="whitespace-nowrap text-[11px] text-white/30">3.2min/image</span></div><p class="body-text text-xs text-white/35">Proven generation power, still blazing fast.</p></div>
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj VISION</h4><span class="whitespace-nowrap text-[11px] text-white/30">0.6s/image</span></div><p class="body-text text-xs text-white/35">Vision-aware generation with contextual understanding.</p></div>
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Flash</h4><span class="whitespace-nowrap text-[11px] text-white/30">0.08s/image</span></div><p class="body-text text-xs text-white/35">Lightning-fast generation for rapid prototyping.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">EmajUltra 2.1</h4><span class="whitespace-nowrap text-[11px] text-white/30">1.6 دقيقة/صورة</span></div><p class="body-text text-xs text-white/35">النموذج الأقوى لتوليد الصور بجودة مذهلة.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">EmajUltra 2</h4><span class="whitespace-nowrap text-[11px] text-white/30">3.2 دقيقة/صورة</span></div><p class="body-text text-xs text-white/35">قوة توليد مجربة وبسرعة عالية.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj VISION</h4><span class="whitespace-nowrap text-[11px] text-white/30">0.6 ثانية/صورة</span></div><p class="body-text text-xs text-white/35">توليد صور مع فهم عميق للسياق البصري.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Flash</h4><span class="whitespace-nowrap text-[11px] text-white/30">0.08 ثانية/صورة</span></div><p class="body-text text-xs text-white/35">توليد بسرعة البرق للتجارب السريعة.</p></div>
         </div></div>
       </div>
       <div class="overflow-hidden rounded-2xl bg-white/[0.03]">
-        <button onclick="toggleModelAcc('macc-i2i',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"><span class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Emaj — Image-to-Image</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <button onclick="toggleModelAcc('macc-i2i',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-right"><span dir="ltr" class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Emaj — Image-to-Image</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
         <div id="macc-i2i" class="model-acc-content"><div class="acc-inner divide-y divide-white/5 px-5 pb-4">
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Edit</h4><span class="whitespace-nowrap text-[11px] text-white/30">Instant</span></div><p class="body-text text-xs text-white/35">Precision image-to-image editing.</p></div>
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Edit E2</h4><span class="whitespace-nowrap text-[11px] text-white/30">Instant</span></div><p class="body-text text-xs text-white/35">Second-generation editing with finer control.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Edit</h4><span class="whitespace-nowrap text-[11px] text-white/30">فوري</span></div><p class="body-text text-xs text-white/35">تعديل دقيق للصور المبنية على صور.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj Edit E2</h4><span class="whitespace-nowrap text-[11px] text-white/30">فوري</span></div><p class="body-text text-xs text-white/35">الجيل الثاني من أدوات التعديل بتحكم أدق.</p></div>
         </div></div>
       </div>
       <div class="overflow-hidden rounded-2xl bg-white/[0.03]">
-        <button onclick="toggleModelAcc('macc-3d',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"><span class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Emaj — 3D-Generation</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <button onclick="toggleModelAcc('macc-3d',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-right"><span dir="ltr" class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Emaj — Emaj — 3D-Generation</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
         <div id="macc-3d" class="model-acc-content"><div class="acc-inner divide-y divide-white/5 px-5 pb-4">
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj VR</h4><span class="whitespace-nowrap text-[11px] text-white/30">360°</span></div><p class="body-text text-xs text-white/35">Immersive 360° VR images from a single prompt.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Emaj VR</h4><span class="whitespace-nowrap text-[11px] text-white/30">360 درجة</span></div><p class="body-text text-xs text-white/35">صور واقع افتراضي 360 درجة من وصف نصي واحد.</p></div>
         </div></div>
       </div>
       <div class="overflow-hidden rounded-2xl bg-white/[0.03]">
-        <button onclick="toggleModelAcc('macc-med',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"><span class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Saria Series</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <button onclick="toggleModelAcc('macc-med',this.querySelector('.chev'))" class="flex w-full items-center justify-between gap-3 px-5 py-4 text-right"><span dir="ltr" class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 sm:text-xs">Saria Series</span><svg class="chev h-4 w-4 shrink-0 text-white/40 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
         <div id="macc-med" class="model-acc-content"><div class="acc-inner divide-y divide-white/5 px-5 pb-4">
-          <div class="flex flex-col gap-1 py-3"><div class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Saria ForMed <span class="font-normal text-white/25">— Open Source</span></h4><span class="whitespace-nowrap text-[11px] text-white/30">Local</span></div><p class="body-text text-xs text-white/35">Medical text & image-to-text intelligence. Runs fully offline on a laptop, PC, or mobile.</p></div>
+          <div class="flex flex-col gap-1 py-3"><div dir="ltr" class="flex items-baseline justify-between gap-3"><h4 class="text-sm font-semibold text-white">Saria ForMed <span class="font-normal text-white/25">— Open Source</span></h4><span class="whitespace-nowrap text-[11px] text-white/30">محلي</span></div><p class="body-text text-xs text-white/35">تحليل طبي متقدم للنصوص والصور. يعمل بدون إنترنت على الهاتف والكمبيوتر.</p></div>
         </div></div>
       </div>
     </div>
@@ -396,22 +472,22 @@
       <div class="dot dot-tl"></div><div class="dot dot-tr"></div><div class="dot dot-bl"></div><div class="dot dot-br"></div>
       <div class="grid items-center gap-16 lg:grid-cols-2">
         <div>
-          <p class="label-reveal mb-4 text-xs font-semibold uppercase text-white/25">LXD: Kaaf — aka TellNote</p>
-          <h2 class="text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl">
-            <span class="words-reveal block" data-words>A notebook,</span>
-            <span class="words-reveal block text-white/30" data-words data-word-delay="0.3">but cooler.</span>
+          <p class="label-reveal mb-4 text-xs font-semibold uppercase text-white/25">LXD: Kaaf — المعروف بـ TellNote</p>
+          <h2 class="text-4xl font-bold leading-relaxed tracking-normal text-white md:text-5xl flex flex-col gap-4 lg:gap-6">
+            <span class="words-reveal block" data-words>مذكرة،</span>
+            <span class="words-reveal block text-white opacity-30" data-words data-word-delay="0.3">لكن بأسلوب عصري.</span>
           </h2>
-          <p class="body-text reveal mt-6 max-w-md text-base leading-relaxed text-white/40" data-delay="250">Kaaf reimagines what a notebook can be — markdown rendering with code display, todo lists, novel sharing, and homework management in one beautifully minimal workspace.</p>
+          <p class="body-text reveal mt-6 max-w-md text-base leading-relaxed text-white/40" data-delay="250">كاف تعيد ابتكار مفهوم المذكرة - ماركداون مع عرض أكواد، قوائم مهام، مشاركة روايات، وإدارة واجبات في مساحة عمل بسيطة وجميلة.</p>
           <div class="reveal mt-8" data-delay="350">
-            <a href="https://kaaf.lxds.org" target="_blank" class="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:gap-4 hover:bg-white/5">Open Kaaf<svg class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+            <a href="https://kaaf.lxds.org" target="_blank" class="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:gap-4 hover:bg-white/5">افتح Kaaf<svg class="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
           </div>
           <p class="reveal mt-4 text-xs text-white/20" data-delay="400">kaaf.lxds.org</p>
         </div>
         <div class="divide-y divide-white/5">
-          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="100"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg><div><h3 class="text-sm font-semibold text-white">Markdown + Code Display</h3><p class="body-text mt-1 text-sm text-white/35">Rich markdown rendering with syntax-highlighted code blocks.</p></div></div>
-          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="200"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><div><h3 class="text-sm font-semibold text-white">Todo Lists</h3><p class="body-text mt-1 text-sm text-white/35">Organize tasks with smart, interactive todo tracking.</p></div></div>
-          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="300"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><div><h3 class="text-sm font-semibold text-white">Novel Sharing</h3><p class="body-text mt-1 text-sm text-white/35">Write, publish, and share novels with a built-in reader.</p></div></div>
-          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="400"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg><div><h3 class="text-sm font-semibold text-white">Homework</h3><p class="body-text mt-1 text-sm text-white/35">Manage assignments and homework in one clean workspace.</p></div></div>
+          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="100"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg><div><h3 class="text-sm font-semibold text-white">ماركداون وعرض الأكواد</h3><p class="body-text mt-1 text-sm text-white/35">عرض ماركداون غني مع تحديد الأكواد البرمجية.</p></div></div>
+          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="200"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><div><h3 class="text-sm font-semibold text-white">قوائم المهام</h3><p class="body-text mt-1 text-sm text-white/35">نظم مهامك وتتبعها بذكاء وتفاعل.</p></div></div>
+          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="300"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><div><h3 class="text-sm font-semibold text-white">مشاركة الروايات</h3><p class="body-text mt-1 text-sm text-white/35">اكتب، انشر وشارك رواياتك مع قارئ مدمج.</p></div></div>
+          <div class="reveal row-hover flex items-start gap-4 py-5" data-delay="400"><svg class="mt-0.5 h-5 w-5 shrink-0 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg><div><h3 class="text-sm font-semibold text-white">الواجبات</h3><p class="body-text mt-1 text-sm text-white/35">إدارة المهام والواجبات المدرسية في مكان واحد أنيق.</p></div></div>
         </div>
       </div>
     </div>
@@ -423,9 +499,9 @@
   <div class="mx-auto max-w-7xl px-6">
     <div class="cta-glow-line reveal relative overflow-hidden rounded-3xl bg-white/[0.03] px-8 py-16 md:px-16 md:py-24" data-delay="0">
       <div class="grid grid-cols-1 items-center gap-10">
-        <div class="text-left">
-          <h2 class="text-3xl font-bold tracking-tight text-white md:text-5xl"><span class="words-reveal" data-words>Start building with us today.</span></h2>
-          <p class="body-text reveal mt-4 max-w-lg text-sm leading-relaxed text-white/40 md:text-base" data-delay="250">APIs, hosting, AI models, bots, and tools,<br/>everything you need to ship faster.</p>
+        <div class="text-right">
+          <h2 class="text-3xl font-bold tracking-tight text-white md:text-5xl"><span class="words-reveal" data-words>ابدأ البناء معنا اليوم.</span></h2>
+          <p class="body-text reveal mt-4 max-w-lg text-sm leading-relaxed text-white/40 md:text-base" data-delay="250">واجهات برمجية، استضافة، نماذج ذكاء اصطناعي، بوتات، وأدوات،<br/>كل ما تحتاجه لإطلاق مشروعك أسرع.</p>
         </div>
       </div>
     </div>
@@ -435,24 +511,33 @@
 
 <footer class="py-16 lg:py-32">
   <div class="mx-auto max-w-7xl px-6">
-    <div class="reveal flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left" data-delay="0">
+    <div class="reveal flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-right" data-delay="0">
       <div class="flex w-full flex-col justify-between gap-6 lg:items-start">
-        <a href="#" class="text-lg font-bold tracking-tight text-white">LXD Co.</a>
-        <p class="body-text max-w-[80%] text-sm text-white/35 lg:max-w-[70%]">AI & Software infrastructure. APIs, hosting, models, and tools — built for speed.</p>
-        <ul class="flex items-center space-x-6 text-white/35">
+        <a href="#" class="text-lg font-bold tracking-tight text-white">شركة لاكس دي العراقية.</a>
+        <p class="body-text max-w-[80%] text-sm text-white/35 lg:max-w-[70%]">بنية تحتية للذكاء الاصطناعي والبرمجيات. واجهات برمجية، استضافة، نماذج، وأدوات — مصممة للسرعة.</p>
+        <ul class="flex items-center gap-6 text-white/35">
           <li class="font-medium transition-all hover:-translate-y-0.5 hover:text-white"><a href="https://instagram.com/lxd.iq" target="_blank" aria-label="Instagram"><svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a></li>
           <li class="font-medium transition-all hover:-translate-y-0.5 hover:text-white"><a href="https://t.me/lxd_iq" target="_blank" aria-label="Telegram"><svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a></li>
         </ul>
       </div>
-      <div class="grid w-full grid-cols-2 gap-6 md:grid-cols-3 lg:gap-20">
-        <div><h3 class="mb-4 font-semibold tracking-tight text-white">Products</h3><ul class="space-y-3 text-sm text-white/35"><li class="font-medium transition-colors hover:text-white"><a href="https://api.lxds.org" target="_blank">LXD Co. API Service</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://host.lxds.org" target="_blank">LXD Co. Host Service</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://kaaf.lxds.org" target="_blank">LXD: Kaaf Notebook</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/lxd_iq" target="_blank">LXD: SpyingDot</a></li></ul></div>
-        <div><h3 class="mb-4 font-semibold tracking-tight text-white">Models</h3><ul class="space-y-3 text-sm text-white/35"><li class="font-medium transition-colors hover:text-white"><a href="#models">NETRONS</a></li><li class="font-medium transition-colors hover:text-white"><a href="#models">Saria Series</a></li><li class="font-medium transition-colors hover:text-white"><a href="#models">Emaj Gen</a></li><li class="font-medium transition-colors hover:text-white"><a href="#models">Emaj Edit</a></li></ul></div>
-        <div><h3 class="mb-4 font-semibold tracking-tight text-white">SpyingDot</h3><ul class="space-y-3 text-sm text-white/35"><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyingtelegram_bot" target="_blank">Spying.Telegram</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyinginstagram_bot" target="_blank">Spying.Instagram</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyingmedia_bot" target="_blank">Spying.Media</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyingmusic_bot" target="_blank">Spying.Music</a></li></ul></div>
+      <div class="grid w-full grid-cols-2 gap-6 md:grid-cols-3 lg:gap-20 text-left">
+        <div dir="ltr"><h3 class="mb-4 font-semibold tracking-tight text-white">Products</h3><ul class="space-y-3 text-sm text-white/35"><li class="font-medium transition-colors hover:text-white"><a href="https://api.lxds.org" target="_blank">LXD Co. API Service</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://host.lxds.org" target="_blank">LXD Co. Host Service</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://kaaf.lxds.org" target="_blank">LXD: Kaaf Notebook</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/lxd_iq" target="_blank">LXD: SpyingDot</a></li></ul></div>
+        <div dir="ltr"><h3 class="mb-4 font-semibold tracking-tight text-white">Models</h3><ul class="space-y-3 text-sm text-white/35"><li class="font-medium transition-colors hover:text-white"><a href="#models">NETRONS</a></li><li class="font-medium transition-colors hover:text-white"><a href="#models">Saria Series</a></li><li class="font-medium transition-colors hover:text-white"><a href="#models">Emaj Gen</a></li><li class="font-medium transition-colors hover:text-white"><a href="#models">Emaj Edit</a></li></ul></div>
+        <div dir="ltr"><h3 class="mb-4 font-semibold tracking-tight text-white">SpyingDot</h3><ul class="space-y-3 text-sm text-white/35"><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyingtelegram_bot" target="_blank">Spying.Telegram</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyinginstagram_bot" target="_blank">Spying.Instagram</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyingmedia_bot" target="_blank">Spying.Media</a></li><li class="font-medium transition-colors hover:text-white"><a href="https://t.me/spyingmusic_bot" target="_blank">Spying.Music</a></li></ul></div>
       </div>
     </div>
-    <div class="reveal mt-8 flex flex-col justify-between gap-4 border-t border-white/5 py-8 text-xs font-medium text-white/25 md:flex-row md:items-center md:text-left" data-delay="100">
-      <p class="order-2 lg:order-1">© 2026 LXD Co. Ai & Software. All rights reserved.</p>
-      <ul class="order-1 flex flex-col gap-2 md:order-2 md:flex-row"><li class="transition-colors hover:text-white"><a href="#">Terms and Conditions</a></li><li class="transition-colors hover:text-white"><a href="#">Privacy Policy</a></li></ul>
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 items-center gap-6 border-t border-white/5 pt-8 pb-4 text-xs font-medium text-white/25 text-center">
+      <div class="reveal flex justify-center md:justify-start order-2 md:order-1" data-delay="100">
+        <p class="text-sm text-white/40">شركة لاكس دي العراقية. جميع الحقوق محفوظة. <span dir="ltr">© 2026</span></p>
+      </div>
+      <div id="footer-center-links" class="reveal flex justify-center order-1 md:order-2" data-delay="200">
+        <ul class="flex flex-row items-center gap-2"><li class="transition-colors hover:text-white"><a href="#">شروط الخدمة</a></li><li class="text-white/20">—</li><li class="transition-colors hover:text-white"><a href="#">سياسة الخصوصية</a></li></ul>
+      </div>
+      <div class="flex justify-center md:justify-end order-3 relative w-full h-full items-center">
+        <span id="lxd-huge-logo" dir="ltr" class="words-reveal absolute left-0 top-1/2 whitespace-nowrap text-[10rem] lg:text-[16rem] font-black tracking-wide text-white leading-none select-none origin-left" style="transform: translateY(-50%) scale(1); font-family: 'Outfit', sans-serif;">
+          <span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.1s">L</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.2s">X</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.3s">D</span></span>&nbsp;<span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.4s">C</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.5s">o</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.6s">.</span></span>
+        </span>
+      </div>
     </div>
   </div>
 </footer>
@@ -461,6 +546,273 @@
 <script src="nav.js"></script>
 <script src="scroll.js"></script>
 <script src="bots.js"></script>
+<script>
+(function(){
+  function adjustLogo(){
+    var logo = document.getElementById('lxd-huge-logo');
+    var centerCol = document.getElementById('footer-center-links');
+    if(!logo || !centerCol) return;
+    
+    var unscaledWidth = logo.offsetWidth;
+    if(!unscaledWidth) return;
+
+    if (window.innerWidth < 768) {
+       var screenW = window.innerWidth - 40;
+       if (unscaledWidth > screenW) {
+         logo.style.transform = 'translateY(-50%) scale(' + (screenW / unscaledWidth) + ')';
+       } else {
+         logo.style.transform = 'translateY(-50%) scale(1)';
+       }
+       return;
+    }
+    
+    var logoLeft = logo.getBoundingClientRect().left;
+    var centerLeft = centerCol.getBoundingClientRect().left;
+    var availableWidth = centerLeft - logoLeft - 20;
+    
+    if (unscaledWidth > availableWidth && availableWidth > 0) {
+      var scale = availableWidth / unscaledWidth;
+      logo.style.transform = 'translateY(-50%) scale(' + scale + ')';
+    } else {
+      logo.style.transform = 'translateY(-50%) scale(1)';
+    }
+  }
+  
+  window.addEventListener('resize', adjustLogo);
+  adjustLogo();
+  setTimeout(adjustLogo, 100);
+  setTimeout(adjustLogo, 500);
+  document.fonts && document.fonts.ready.then(adjustLogo);
+})();
+</script>
 <script src="mobile.js"></script>
+
+<!-- Full Screen Pricing Modal -->
+<div id="pricing-modal" onclick="closePricingModal()" class="fixed inset-0 z-[150] hidden w-full h-full overflow-y-auto bg-[#09090b] p-6 sm:p-12 lg:p-16 transition-opacity duration-200 opacity-0 will-change-opacity custom-scrollbar">
+  <!-- Fixed Close Button (Right, Clean Icon) -->
+  <button onclick="closePricingModal()" class="fixed top-6 right-6 z-50 flex h-10 w-10 items-center justify-center text-white/60 hover:text-white transition-colors cursor-pointer" aria-label="إغلاق">
+    <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+  
+  <div class="max-w-7xl mx-auto w-full pt-4 pb-16" onclick="event.stopPropagation()">
+    
+    
+
+    <!-- Header Section (Centered on screen opening) -->
+    <div class="pop-item text-center max-w-2xl mx-auto min-h-[40vh] flex flex-col justify-center items-center py-8 transition-all duration-500">
+      <h2 class="text-xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-3 text-center">اختر الخطة المناسبة لنمو مشروعك</h2>
+      <p class="text-xs sm:text-sm text-white/50 max-w-lg leading-relaxed">أسعار شفافة وباقات مخصصة تناسب المطورين والأفراد والمؤسسات الكبيرة.</p>
+    </div>
+
+
+    <!-- Section 1: LXD API Pricing -->
+    <div class="mb-16 pop-item">
+      <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-3">
+        <div class="p-2 rounded-xl bg-white/5 border border-white/10 text-white">
+          <svg class="h-6 w-6" viewBox="0 0 100 100" fill="none"><path d="M20 30L80 20L80 40L20 50Z" fill="currentColor"/><path d="M20 55L80 45L80 65L20 75Z" fill="currentColor" opacity="0.6"/><path d="M20 80L80 70L80 85L20 95Z" fill="currentColor" opacity="0.3"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white">منصة المطورين (LXD API)</h3>
+          <p class="text-xs text-white/40">إدارة خطتك الحالية وترقية حسابك لسرعات واكواد أعلى</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 flex flex-col justify-between transition-all hover:border-white/20">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-base font-bold text-white">الخطة المجانية</h4>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white/80">مجاني</span>
+            </div>
+            <p class="text-xs text-white/40 mb-4">للتجربة والمشاريع الصغيرة.</p>
+            <div class="mb-6">
+              <span class="text-3xl font-black text-white">$0</span>
+              <span class="text-xs text-white/40 font-medium">/ يوم</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-white/70 mb-6">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>100 Xen يومياً مجاناً</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>جميع النماذج النصية</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>3 مفاتيح API كحد أقصى</li>
+            </ul>
+          </div>
+          <a href="https://api.lxds.org/subscription" target="_blank" class="w-full py-2.5 rounded-xl border border-white/10 bg-white/5 text-center text-xs font-semibold text-white transition-all hover:bg-white/10">الخطة الحالية</a>
+        </div>
+
+        <!-- Developer Plan -->
+        <div class="relative rounded-2xl border border-white/30 bg-gradient-to-b from-white/10 to-zinc-900/80 p-6 flex flex-col justify-between shadow-xl transition-all hover:border-white/50">
+          <span class="absolute -top-3 right-6 rounded-full bg-white px-3 py-1 text-[10px] font-black text-black shadow-md">موصى به</span>
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-base font-bold text-white">المطور</h4>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-white">الأكثر شعبية</span>
+            </div>
+            <p class="text-xs text-white/60 mb-4">للمطورين الجادين — 2,000 Xen يومياً.</p>
+            <div class="mb-6">
+              <span class="text-3xl font-black text-white">$10</span>
+              <span class="text-xs text-white/50 font-medium">/ شهر</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-white/80 mb-6">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>2,000 Xen / يوم</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>10 مفاتيح API</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>جميع النماذج بلا استثناء</li>
+            </ul>
+          </div>
+          <a href="https://api.lxds.org/subscription" target="_blank" class="w-full py-2.5 rounded-xl bg-white text-center text-xs font-bold text-black shadow-lg transition-all hover:bg-white/90 hover:scale-105">ترقية الحساب</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 flex flex-col justify-between transition-all hover:border-white/20">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-base font-bold text-white">المؤسسات</h4>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white/80">خاص</span>
+            </div>
+            <p class="text-xs text-white/40 mb-4">ادفع حسب الاستخدام — بدون حدود يومية.</p>
+            <div class="mb-6">
+              <span class="text-3xl font-black text-white">$1</span>
+              <span class="text-xs text-white/40 font-medium">= 4,000 Xen</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-white/70 mb-6">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Xen غير محدود</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>مفاتيح غير محدودة</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>دعم مباشر وخاص</li>
+            </ul>
+          </div>
+          <a href="https://api.lxds.org/subscription" target="_blank" class="w-full py-2.5 rounded-xl border border-white/10 bg-white/5 text-center text-xs font-semibold text-white transition-all hover:bg-white/10">تواصل للترقية</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: LXD Host Pricing -->
+    <div class="pop-item">
+      <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-3">
+        <div class="p-2 rounded-xl bg-white/5 border border-white/10 text-white">
+          <svg class="h-6 w-6" viewBox="363 280 296 210" fill="currentColor"><path d="M590.756653,338.301758 C612.027344,379.291870 633.100952,419.964508 654.226624,460.610138 C658.856323,469.517578 658.628418,477.416138 653.342896,482.821625 C649.989746,486.250885 645.948669,487.430298 641.149597,487.420410 C597.658142,487.330780 554.166382,487.397583 510.674713,487.398438 C468.849426,487.399261 427.017517,486.954010 385.202606,487.605743 C371.614777,487.817535 363.564301,474.881195 369.853607,462.883148 C394.601013,415.673004 419.101471,368.333405 443.704071,321.047302 C446.492554,315.687805 451.049194,312.930023 456.993408,312.751587 C463.391418,312.559448 468.287598,315.415131 471.269318,321.091034 C479.325317,336.426361 487.273315,351.818451 495.264191,367.187988 C508.556610,392.754486 521.854126,418.318390 535.132385,443.892242 C536.230591,446.007355 537.226074,448.046417 540.151428,448.014862 C550.795532,447.899933 561.475281,448.378693 572.075806,447.661957 C583.906006,446.862183 593.952759,436.062836 594.687256,424.612244 C595.556030,411.068237 587.352905,399.465546 574.934937,396.439087 C570.434570,395.342285 566.020325,395.359528 561.652405,396.739044 C559.038025,397.564667 557.707336,396.953125 556.897705,394.207550 C549.110107,367.799713 534.373169,357.030396 506.780975,357.432800 C506.144989,357.442108 505.507507,357.347229 504.901031,357.303131 C504.067200,355.043304 505.574036,353.625702 506.362122,352.096802 C516.588989,332.255981 526.898865,312.457947 537.135132,292.621918 C540.362671,286.367554 544.873108,282.512939 552.409180,282.595184 C559.792053,282.675751 563.948181,286.716156 567.061157,292.756409 C574.844238,307.858002 582.732361,322.905426 590.756653,338.301758z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white">لوحة التحكم والاستضافة (LXD Host)</h3>
+          <p class="text-xs text-white/40">اختر الخطط المناسبة لاحتياجاتك وابدأ في نشر مشاريعك بكل سهولة</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Free Host -->
+        <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 flex flex-col justify-between transition-all hover:border-white/20">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-base font-bold text-white">الخطة المجانية</h4>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white/80">مجاني</span>
+            </div>
+            <p class="text-xs text-white/40 mb-4">مثالية للمبتدئين ومشاريع الهواة.</p>
+            <div class="mb-6">
+              <span class="text-3xl font-black text-white">$0</span>
+              <span class="text-xs text-white/40 font-medium">/ شهر</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-white/70 mb-6">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>مساحة 25 ميغابايت</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>3 مواقع</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>شهادة SSL مجانية</li>
+            </ul>
+          </div>
+          <a href="https://host.lxds.org/dashboard/pricing" target="_blank" class="w-full py-2.5 rounded-xl border border-white/10 bg-white/5 text-center text-xs font-semibold text-white transition-all hover:bg-white/10">الخطة الحالية</a>
+        </div>
+
+        <!-- Paid Host -->
+        <div class="relative rounded-2xl border border-white/30 bg-gradient-to-b from-white/10 to-zinc-900/80 p-6 flex flex-col justify-between shadow-xl transition-all hover:border-white/50">
+          <span class="absolute -top-3 right-6 rounded-full bg-white px-3 py-1 text-[10px] font-black text-black shadow-md">الأفضل</span>
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-base font-bold text-white">الخطة المدفوعة</h4>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-white">للمحترفين</span>
+            </div>
+            <p class="text-xs text-white/60 mb-4">مثالية للمحترفين والأعمال.</p>
+            <div class="mb-6">
+              <span class="text-3xl font-black text-white">$2</span>
+              <span class="text-xs text-white/50 font-medium">/ شهر</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-white/80 mb-6">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>مساحة 10 غيغابايت</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>100 موقع</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>ذكاء اصطناعي ودومين مخصص</li>
+            </ul>
+          </div>
+          <a href="https://host.lxds.org/dashboard/pricing" target="_blank" class="w-full py-2.5 rounded-xl bg-white text-center text-xs font-bold text-black shadow-lg transition-all hover:bg-white/90 hover:scale-105">ترقية الآن</a>
+        </div>
+
+        <!-- Custom Host -->
+        <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 flex flex-col justify-between transition-all hover:border-white/20">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-base font-bold text-white">الخطة المخصصة</h4>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white/80">شركات</span>
+            </div>
+            <p class="text-xs text-white/40 mb-4">مثالية للشركات الكبيرة.</p>
+            <div class="mb-6">
+              <span class="text-3xl font-black text-white">??$</span>
+              <span class="text-xs text-white/40 font-medium">/ شهر</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-white/70 mb-6">
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>مساحة مخصصة</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>مواقع غير محدودة</li>
+              <li class="flex items-center gap-2"><svg class="h-4 w-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>خدمات ودعم مخصص</li>
+            </ul>
+          </div>
+          <a href="https://host.lxds.org/dashboard/pricing" target="_blank" class="w-full py-2.5 rounded-xl border border-white/10 bg-white/5 text-center text-xs font-semibold text-white transition-all hover:bg-white/10">تواصل معنا</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extra Bottom Padding -->
+    <div class="h-40 sm:h-56"></div>
+  </div>
+</div>
+
+<script>
+function openPricingModal() {
+  var modal = document.getElementById('pricing-modal');
+  if (!modal) return;
+  modal.scrollTop = 0;
+  modal.classList.remove('hidden');
+  modal.classList.add('block');
+  
+  var pops = modal.querySelectorAll('.pop-item');
+  pops.forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(50px) scale(0.95)';
+  });
+
+  setTimeout(function() {
+    modal.classList.remove('opacity-0');
+    modal.classList.add('opacity-100');
+
+    pops.forEach(function(el, i) {
+      setTimeout(function() {
+        el.style.transition = 'all 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0) scale(1)';
+      }, 80 + i * 120);
+    });
+  }, 20);
+
+  document.body.style.overflow = 'hidden';
+}
+
+function closePricingModal() {
+  var modal = document.getElementById('pricing-modal');
+  if (!modal) return;
+  modal.classList.remove('opacity-100');
+  modal.classList.add('opacity-0');
+  setTimeout(function() {
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }, 300);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePricingModal();
+});
+</script>
+
 </body>
 </html>

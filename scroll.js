@@ -65,7 +65,7 @@ document.querySelectorAll('.reveal,.words-reveal,.line-reveal,.label-reveal').fo
     } else if (sModels && threshold >= sModels.offsetTop) {
        newText = ' AI Models';
     } else if (sSpying && threshold >= sSpying.offsetTop) {
-       newText = ' SpyingDot Bots';
+       newText = ' SpyingDot';
     } else if (sProducts && threshold >= sProducts.offsetTop) {
        newText = ' Products';
     }

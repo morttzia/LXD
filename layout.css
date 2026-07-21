@@ -11,13 +11,14 @@
 .nav-item{position:relative}
 .nav-pill-btn{background:rgba(0,0,0,0.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:none;transition:background-color .4s cubic-bezier(0.4,0,0.2,1),backdrop-filter .4s cubic-bezier(0.4,0,0.2,1)}
 #nav-shell.nav-scrolled .nav-pill-btn{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
-#nav-left-zone{flex:1 1 0%;min-width:0;transition:padding-right .4s cubic-bezier(0.4,0,0.2,1)}
-#nav-shell.nav-scrolled #nav-left-zone{padding-right:1.5rem}
+#nav-left-zone{flex:1 1 0%;min-width:0;transition:padding-inline-end .4s cubic-bezier(0.4,0,0.2,1)}
+#nav-shell.nav-scrolled #nav-left-zone{padding-inline-end:1.5rem}
 #nav-right-zone{flex:1 1 0%;min-width:0;display:flex;justify-content:flex-end}
 .dd-trigger svg{transition:transform .3s var(--ease-expo)}
 .nav-item.dd-open .dd-trigger{color:#fff;background:rgba(255,255,255,.06)}
 .nav-item.dd-open .dd-trigger svg{transform:rotate(180deg)}
 .nav-dropdown-shared {
+  overflow:hidden;
   position:absolute;top:calc(100% + 10px);left:0;
   background:rgba(10,10,10,0.65);
   backdrop-filter:blur(20px);
@@ -32,9 +33,9 @@
 }
 .nav-dropdown-shared.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
 .dropdown-panel {
-  position:absolute;top:0;left:0;width:100%;opacity:0;pointer-events:none;transition:opacity .25s ease;
+  position:absolute;top:0;left:0;width:100%;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease, visibility .25s;
 }
-.dropdown-panel.active{opacity:1;pointer-events:auto;position:relative}
+.dropdown-panel.active{opacity:1;visibility:visible;pointer-events:auto;position:relative}
 .dropdown-panel a{display:flex;gap:12px;border-radius:.6rem;padding:10px;text-decoration:none;transition:background .15s ease}
 .dropdown-panel a:hover{background:rgba(255,255,255,.06)}
 .dropdown-panel a .dd-icon{color:rgba(255,255,255,.7);flex-shrink:0;margin-top:2px}
