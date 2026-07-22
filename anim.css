@@ -45,27 +45,29 @@
   object-fit: cover;
   object-position: center;
   opacity: 0;
-  animation: hero-bg-cycle 10s infinite;
+  animation: hero-bg-cycle 15s infinite;
   will-change: transform, opacity;
   pointer-events: none;
   user-select: none;
 }
 .bg-layer-1 { animation-delay: 0s; }
 .bg-layer-2 { animation-delay: 5s; }
+.bg-layer-3 { animation-delay: 10s; }
 
 .content-layer {
   opacity: 0;
-  animation: hero-bg-cycle 10s infinite;
+  pointer-events: none;
+  animation: hero-bg-cycle 15s infinite;
   will-change: opacity;
 }
 .content-layer-1 { animation-delay: 0s; }
-.content-layer-2 { animation-delay: 5s; pointer-events: none; }
-.content-layer-2 a, .content-layer-2 button { pointer-events: auto; }
+.content-layer-2 { animation-delay: 5s; }
+.content-layer-3 { animation-delay: 10s; }
 
 @keyframes hero-bg-cycle {
-  0% { opacity: 0; }
-  12.5% { opacity: 1; }
-  50% { opacity: 1; }
-  62.5% { opacity: 0; }
-  100% { opacity: 0; }
+  0% { opacity: 0; pointer-events: none; }
+  10% { opacity: 1; pointer-events: auto; }
+  33.33% { opacity: 1; pointer-events: auto; }
+  43.33% { opacity: 0; pointer-events: none; }
+  100% { opacity: 0; pointer-events: none; }
 }

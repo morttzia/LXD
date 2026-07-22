@@ -203,7 +203,7 @@
 </div>
 
 
-<section class="relative flex min-h-[95vh] lg:min-h-screen flex-col justify-end overflow-hidden pb-6 pt-20 lg:pb-10 lg:pt-24">
+<section class="relative flex min-h-[95vh] lg:min-h-screen flex-col justify-end overflow-hidden pb-16 pt-20 lg:pb-24 lg:pt-24 xl:pb-32">
   <div class="absolute inset-0 pointer-events-none z-0 bg-anim-container">
     <picture>
       <source media="(max-width: 767px)" srcset="emajultramobile.png">
@@ -213,38 +213,51 @@
       <source media="(max-width: 767px)" srcset="hostmobile.png">
       <img src="host.png" alt="Hero Background 2" class="bg-layer bg-layer-2" />
     </picture>
-    <div class="absolute inset-x-0 bottom-0 h-40 lg:h-56 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
+    <picture>
+      <source media="(max-width: 767px)" srcset="apimobile.png">
+      <img src="api.png" alt="Hero Background 3" class="bg-layer bg-layer-3" />
+    </picture>
+    <div class="absolute inset-x-0 bottom-0 h-40 lg:h-64 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
   </div>
   <div id="hero-content" class="relative z-10 w-full px-6 md:px-12 lg:px-16 will-change-transform">
       <div class="grid w-full">
-        
-        
+
+
+        <!-- Slide 1: Models -->
         <div class="content-layer content-layer-1 col-start-1 row-start-1 flex flex-col items-start gap-4 text-right">
-          <h1 class="text-3xl font-bold leading-relaxed tracking-normal text-white md:text-5xl lg:text-6xl [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-4 lg:gap-6">
-            <span class="block">ابنِ مشروعك القادم</span>
-            <span class="glow-line block text-white opacity-70">مع LXD Co.</span>
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.75rem] font-bold leading-tight tracking-normal text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-3 lg:gap-4 whitespace-nowrap">
+            <span class="block">أقوى النماذج المتنوعة</span>
           </h1>
-          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">واجهات برمجية، استضافة، نماذج ذكاء اصطناعي، وأدوات — بيئة متكاملة مصممة للسرعة. من توليد نصوص بسرعة 7000 حرف/ثانية إلى إنشاء صور في 0.08 ثانية.</p>
+          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">نعمل باستمرار على تطوير وتوفير مجموعة واسعة من النماذج فائقة السرعة، القادرة على تنفيذ مختلف المهام بكفاءة عالية، بدءاً من إنشاء النصوص وتحليلها، وصولاً إلى إنشاء الصور وتحريرها.</p>
           <div class="mt-3 flex w-full flex-wrap justify-start gap-3">
             <a href="#products" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">ابدأ الآن<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
             <a href="https://t.me/lxd_iq" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/20 bg-black/60 px-6 text-xs font-semibold text-white transition-all duration-300 hover:gap-3 hover:bg-white/10 sm:text-sm">اكتشف المزيد<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
           </div>
         </div>
 
-        
-        <div class="content-layer content-layer-2 col-start-1 row-start-1 flex flex-col items-start gap-4 text-right pointer-events-none">
-          <h1 class="text-3xl font-bold leading-relaxed tracking-normal text-white md:text-5xl lg:text-6xl [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-4 lg:gap-6">
-            <span class="block">انشر فوراً على</span>
-            <span class="glow-line block text-white opacity-70">LXD Host Service.</span>
+        <!-- Slide 2: Host -->
+        <div class="content-layer content-layer-2 col-start-1 row-start-1 flex flex-col items-start gap-4 text-right">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.75rem] font-bold leading-tight tracking-normal text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-3 lg:gap-4 whitespace-nowrap">
+            <span class="block">استضافة لكل مشاريعك</span>
           </h1>
-          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">بنية تحتية جبارة للاستضافة. انشر مواقعك، بوتات التيليجرام، النماذج الذكية، وحاويات دوكر بسرعة وثبات.</p>
-          <div class="mt-3 flex w-full flex-wrap justify-start gap-3 pointer-events-auto">
+          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">وفّر بيئة سريعة وموثوقة لاستضافة مواقعك، بوتات التليگرام، النماذج الذكاء، حاويات دوكر، والكثير من الخدمات الأخرى، مع بنية تحتية مصممة لتوفير أداء وسرعة عالية.</p>
+          <div class="mt-3 flex w-full flex-wrap justify-start gap-3">
             <a href="https://host.lxds.org" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">استضف الآن<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
           </div>
         </div>
 
+        <!-- Slide 3: API Platform -->
+        <div class="content-layer content-layer-3 col-start-1 row-start-1 flex flex-col items-start gap-4 text-right">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.75rem] font-bold leading-tight tracking-normal text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.9)] flex flex-col gap-3 lg:gap-4 whitespace-nowrap">
+            <span class="block">منصة نماذج شاملة</span>
+          </h1>
+          <p class="body-text max-w-xl text-white/80 text-sm md:text-base lg:text-lg [text-shadow:_0_1px_4px_rgba(0,0,0,0.9)]">احصل على وصول إلى مجموعة واسعة من النماذج المتقدمة للتوليد النصي والبصري، وغيرها من المهام بأسعار تنافسية، مع أدوات لإدارة الفرق والتعاون بينها، بالإضافة إلى هدايا دورية.</p>
+          <div class="mt-3 flex w-full flex-wrap justify-start gap-3">
+            <a href="https://api.lxds.org" target="_blank" class="group inline-flex h-10 max-w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-6 text-xs font-semibold text-black shadow-sm transition-all duration-300 hover:gap-3 hover:shadow-lg hover:shadow-white/10 sm:text-sm">منصة API<svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+          </div>
+        </div>
+
       </div>
-  </div>
 </section>
 
 
@@ -351,7 +364,7 @@
             <img id="bot-image" src="https://i.ibb.co/CKrn538N/photo-5402234535660950716-y.jpg" alt="Bot Profile" class="h-12 w-12 shrink-0 rounded-full border border-white/10 object-cover shadow-sm lg:h-14 lg:w-14"/>
             <div class="min-w-0 flex flex-col justify-center text-right">
               <h3 id="bot-title" class="text-lg font-bold tracking-tight text-white lg:text-xl leading-tight w-full text-right" dir="rtl"><span dir="ltr">Spying.Telegram</span></h3>
-              <div id="bot-description-container" class="flex items-center mt-1.5">
+              <div id="bot-description-container" class="flex items-center mt-0.5">
                 <p id="bot-description" class="body-text max-w-xs text-sm leading-relaxed text-white/40 lg:max-w-md">أتمتة وإدارة حسابات وقنوات التيليجرام بسهولة فائقة.</p>
               </div>
             </div>
@@ -528,13 +541,13 @@
     </div>
     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 items-center gap-6 border-t border-white/5 pt-8 pb-4 text-xs font-medium text-white/25 text-center">
       <div class="reveal flex justify-center md:justify-start order-2 md:order-1" data-delay="100">
-        <p class="text-sm text-white/40">شركة لاكس دي العراقية. جميع الحقوق محفوظة. <span dir="ltr">© 2026</span></p>
+        <p class="text-[11px] sm:text-xs text-white/40 text-center md:text-right leading-normal">شركة لاكس دي العراقية. جميع الحقوق محفوظة. <span dir="ltr">© 2026</span></p>
       </div>
       <div id="footer-center-links" class="reveal flex justify-center order-1 md:order-2" data-delay="200">
         <ul class="flex flex-row items-center gap-2"><li class="transition-colors hover:text-white"><a href="#">شروط الخدمة</a></li><li class="text-white/20">—</li><li class="transition-colors hover:text-white"><a href="#">سياسة الخصوصية</a></li></ul>
       </div>
-      <div class="flex justify-center md:justify-end order-3 relative w-full h-full items-center">
-        <span id="lxd-huge-logo" dir="ltr" class="words-reveal absolute left-0 top-1/2 whitespace-nowrap text-[10rem] lg:text-[16rem] font-black tracking-wide text-white leading-none select-none origin-left" style="transform: translateY(-50%) scale(1); font-family: 'Outfit', sans-serif;">
+      <div class="flex justify-center md:justify-end order-3 relative w-full h-24 md:h-full items-center mt-8 md:mt-0 pt-4 md:pt-0">
+        <span id="lxd-huge-logo" dir="ltr" class="words-reveal relative md:absolute left-auto md:left-0 top-auto md:top-1/2 whitespace-nowrap text-[5rem] sm:text-[8rem] lg:text-[16rem] font-black tracking-wide text-white leading-none select-none md:-translate-y-1/2" style="font-family: 'Outfit', sans-serif;">
           <span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.1s">L</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.2s">X</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.3s">D</span></span>&nbsp;<span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.4s">C</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.5s">o</span></span><span class="wm" style="padding: 0 0.1em; margin: 0 -0.1em;"><span class="w" style="transition-delay: 0.6s">.</span></span>
         </span>
       </div>
@@ -557,14 +570,13 @@
     if(!unscaledWidth) return;
 
     if (window.innerWidth < 768) {
-       var screenW = window.innerWidth - 40;
-       if (unscaledWidth > screenW) {
-         logo.style.transform = 'translateY(-50%) scale(' + (screenW / unscaledWidth) + ')';
-       } else {
-         logo.style.transform = 'translateY(-50%) scale(1)';
-       }
+       var screenW = window.innerWidth - 32;
+       var scale = unscaledWidth > screenW ? (screenW / unscaledWidth) : 1;
+       logo.style.transformOrigin = 'center center';
+       logo.style.transform = 'scale(' + scale + ')';
        return;
     }
+    logo.style.transformOrigin = 'left center';
     
     var logoLeft = logo.getBoundingClientRect().left;
     var centerLeft = centerCol.getBoundingClientRect().left;

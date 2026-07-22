@@ -57,8 +57,9 @@
     var startRect=contentContainer.getBoundingClientRect();
     var endRect=activeBtn.getBoundingClientRect();
     if(startRect.width===0||endRect.width===0)return;
+    var titleRect=domTitle.getBoundingClientRect();
     targetX1=(startRect.left-svgRect.left)-12;
-    targetY1=(startRect.top-svgRect.top)+40;
+    targetY1=(titleRect.top-svgRect.top)+(titleRect.height/2);
     var isDesktop=window.innerWidth>=1024;
     var endOffset=isDesktop?endRect.width:(endRect.width/2);
     targetX2=(endRect.left-svgRect.left)+endOffset+14;
